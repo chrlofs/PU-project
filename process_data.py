@@ -1,11 +1,14 @@
 
-from receiver import Receive
+from receiver import Receiver
 from direction import Direction
 from math import fabs
 
 
 
 class ProcessData:
+
+    def __init__(self, receiver):
+        self.receiver = receiver
 
     def get_ambulance_data(self):
         """Return the two last data sets from Receiver
@@ -20,14 +23,13 @@ class ProcessData:
 
         # When history stack has two elements
         # Pop elements
-        first = Receive.history.get()  # Remove from history stack
-        last = Receive.history.get()
-        Receive.history.put(last)  # Put last element back to the history stack
-
-        long = Receive.history[long]
-        lat =
+        first = self.receiver.history.get()  # Remove from history stack
+        last = self.receiver.history.get()
+        self.receiver.history.put(last)  # Put last element back to the history stack
 
         return [first, last]
+
+        
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
         new_car_pos = (new_car['latitude'], new_car['longitude'])
