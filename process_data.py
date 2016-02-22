@@ -3,8 +3,6 @@ from receiver import Receive
 from direction import Direction
 from math import fabs
 
-
-
 class ProcessData:
 
     def get_ambulance_data(self):
@@ -22,10 +20,10 @@ class ProcessData:
         # Pop elements
         first = Receive.history.get()  # Remove from history stack
         last = Receive.history.get()
-        Receive.history.put(last)  # Put last element back to the history stack
+        Receive.history.put(last)  #Put last element back to the history stack
 
         long = Receive.history[long]
-        lat =
+        #lat =
 
         return [first, last]
 
@@ -45,6 +43,9 @@ class ProcessData:
         old_ambu_pos = (old_ambu['latitude'], old_ambu['longitude'])
         old_ambu_speed = old_ambu['speed']
         old_ambu_time = old_ambu['time']
+
+        if _find_direction(new_ambu_pos, old_ambu_pos) != \
+        _find_direction(new_car_pos, old_car_pos): return False
 
 
     def _find_direction(self, data1, data2):
@@ -67,3 +68,15 @@ class ProcessData:
         if long_change > 0:
             return Direction.north
         return Direction.south
+    
+    def _get_distance(self, car_pos, ambu_pos):
+        """Find distance between ambulance and the car, returns distance as 
+        float
+        
+        keyword arguments:
+        car_pos -- car latitude or longditude, depending on the cars direction
+        ambu_pos -- ambulance latitude or longditude, 
+                    depending on the ambulances direction"""
+        return fabs(car_pos) - fabs(ambu_pos)
+
+
