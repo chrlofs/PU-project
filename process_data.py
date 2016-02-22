@@ -20,7 +20,7 @@ class ProcessData:
 
         # When history stack has two elements
         # Pop elements
-<<<<<<< HEAD
+
         first = self.receiver.history.get()  # Remove from history stack
         last = self.receiver.history.get()
         self.receiver.history.put(last)  # Put last element back to the history stack
