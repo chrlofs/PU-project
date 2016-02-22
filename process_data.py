@@ -8,6 +8,7 @@ class ProcessData:
 
         Returns
         -------
+        Array containing first and last
         first : dict containing GPS data, timestamp, speed
         last : dict containing GPS data, timestamp, speed
         """
