@@ -1,9 +1,16 @@
-from receiver import Receive
+from receiver import Receiver
 
 
 class ProcessData:
 
-    def getAmbulanceData(self):
+    def get_ambulance_data(self):
+        """Return the two last data sets from Receiver
+
+        Returns
+        -------
+        first : dict containing GPS data, timestamp, speed
+        last : dict containing GPS data, timestamp, speed
+        """
         # TODO: Implement listener
 
         # When history stack has two elements
@@ -12,5 +19,4 @@ class ProcessData:
         last = Receive.history.get()
         Receive.history.put(last)  # Put last element back to the history stack
 
-        long = Receive.history[long]
-        lat =
+        return [first, last]
