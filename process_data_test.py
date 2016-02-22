@@ -1,3 +1,9 @@
+import process_data
 import unittest
 
-class TestProcessDataMethods(unittest.TestCase)
+process = process_data.ProcessData()
+
+class TestProcessDataMethods(unittest.TestCase): 
+
+	def test_get_ambulance_data(self):
+		self.assert

@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-
 from receiver import Receiver
-from direction import Direction
-=======
-from receiver import Receive
 from Direction import Direction
->>>>>>> 454a1c8b1c155b654c2fc7197b6666f6aaced30b
 from math import fabs
 
 class ProcessData:
@@ -26,7 +20,7 @@ class ProcessData:
 
         # When history stack has two elements
         # Pop elements
-
+<<<<<<< HEAD
         first = self.receiver.history.get()  # Remove from history stack
         last = self.receiver.history.get()
         self.receiver.history.put(last)  # Put last element back to the history stack
