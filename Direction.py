@@ -5,3 +5,4 @@ class Direction(Enum):
     east = 2
     south = 3
     west = 4
+    standing_still = 5
