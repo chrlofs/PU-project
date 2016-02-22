@@ -1,11 +1,21 @@
-#from receiver import Receive
+
+from receiver import Receive
 from direction import Direction
 from math import fabs
 
 
+
 class ProcessData:
 
-    """def getAmbulanceData(self):
+    def get_ambulance_data(self):
+        """Return the two last data sets from Receiver
+
+        Returns
+        -------
+        Array containing first and last
+        first : dict containing GPS data, timestamp, speed
+        last : dict containing GPS data, timestamp, speed
+        """
         # TODO: Implement listener
 
         # When history stack has two elements
@@ -15,7 +25,9 @@ class ProcessData:
         Receive.history.put(last)  # Put last element back to the history stack
 
         long = Receive.history[long]
-        lat ="""
+        lat =
+
+        return [first, last]
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
         new_car_pos = (new_car['latitude'], new_car['longitude'])
