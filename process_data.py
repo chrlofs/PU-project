@@ -1,6 +1,5 @@
-
 from receiver import Receive
-from direction import Direction
+from Direction import Direction
 from math import fabs
 
 class ProcessData:
@@ -23,7 +22,7 @@ class ProcessData:
         Receive.history.put(last)  #Put last element back to the history stack
 
         long = Receive.history[long]
-        #lat =
+        lat =
 
         return [first, last]
 
@@ -44,8 +43,11 @@ class ProcessData:
         old_ambu_speed = old_ambu['speed']
         old_ambu_time = old_ambu['time']
 
-        if _find_direction(new_ambu_pos, old_ambu_pos) != \
-        _find_direction(new_car_pos, old_car_pos): return False
+        car_dir = _find_direction(new_car_pos, old_car_pos)
+        ambu_dir = _find_direction(new_ambu_pos, old_ambu_pos)
+
+        if car_dir != ambu_dir: return False
+        if not _ambu_behind(new_car_pos, new_ambu_pos, car_dir): return False
 
 
     def _find_direction(self, data1, data2):
@@ -68,7 +70,27 @@ class ProcessData:
         if long_change > 0:
             return Direction.north
         return Direction.south
-    
+
+    def _ambu_behind(self, car_pos, ambu_pos, direction):
+        """Decide if the ambu is in front of, or behind the car
+        
+        Keyword arguments:
+        car_pos -- tuple with latitude and longitude from newest data of car 
+        ambu_pos -- tuple with latitude and longitude from newest data of ambu
+        direction -- Direction of the two vehicles. Must be the same after 
+                        comparing in is_relevant
+        """
+
+        if direction.name == 'east':
+            return car_pos[0] > ambu_pos[0] 
+        if direction.name == 'west':
+            return car_pos[0] < ambu_pos[0] 
+        if direction.name == 'north':
+            return car_pos[1] > ambu_pos[1] 
+        if direction.name == 'south':
+            return car_pos[1] < ambu_pos[1] 
+        return True  
+
     def _get_distance(self, car_pos, ambu_pos):
         """Find distance between ambulance and the car, returns distance as 
         float
@@ -76,7 +98,6 @@ class ProcessData:
         keyword arguments:
         car_pos -- car latitude or longditude, depending on the cars direction
         ambu_pos -- ambulance latitude or longditude, 
-                    depending on the ambulances direction"""
+                    depending on the ambulances direction
+        """
         return fabs(car_pos) - fabs(ambu_pos)
-
-
