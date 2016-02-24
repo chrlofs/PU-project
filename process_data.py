@@ -29,8 +29,6 @@ class ProcessData:
 
         return [first, last]
 
-        
-
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
         new_car_pos = (new_car['latitude'], new_car['longitude'])
         new_car_speed = new_car['speed']
@@ -54,8 +52,12 @@ class ProcessData:
         if car_dir != ambu_dir: return False
         if not _ambu_behind(new_car_pos, new_ambu_pos, car_dir): return False
 
-        distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0], 
+        distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0],
                new_ambu_pos[1], new_ambu_pos[0]) 
+
+        if distance_km > 2: return False
+        
+        return True
 
     def _find_direction(self, data1, data2):
         """Find direction for vehicle, returns Direction enum
