@@ -1,6 +1,7 @@
 from receiver import Receiver
 from Direction import Direction
 from math import fabs
+from calculator import Calculator
 
 class ProcessData:
 
@@ -53,6 +54,8 @@ class ProcessData:
         if car_dir != ambu_dir: return False
         if not _ambu_behind(new_car_pos, new_ambu_pos, car_dir): return False
 
+        distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0], 
+               new_ambu_pos[1], new_ambu_pos[0]) 
 
     def _find_direction(self, data1, data2):
         """Find direction for vehicle, returns Direction enum
@@ -95,13 +98,3 @@ class ProcessData:
             return car_pos[1] < ambu_pos[1] 
         return True  
 
-    def _get_distance(self, car_pos, ambu_pos):
-        """Find distance between ambulance and the car, returns distance as 
-        float
-        
-        keyword arguments:
-        car_pos -- car latitude or longditude, depending on the cars direction
-        ambu_pos -- ambulance latitude or longditude, 
-                    depending on the ambulances direction
-        """
-        return fabs(car_pos) - fabs(ambu_pos)
