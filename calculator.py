@@ -2,7 +2,7 @@ from math import sin, cos, sqrt, atan2, radians
 
 class Calculator:
 
-    def gps_to_kmeters(long1, lat1, long2, lat2):
+    def gps_to_kmeters(self, long1, lat1, long2, lat2):
         """Converts gps longitudes and latitudes distance to meters
 
         Keyword arguments:
