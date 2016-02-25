@@ -6,7 +6,7 @@ import json
 class Sender:
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = '78.91.50.81'
+    host = '78.91.50.81'  # Receiver's IP-address, must change as needed
     port = 12000
     sock.connect((host, port))
     json_data = []
