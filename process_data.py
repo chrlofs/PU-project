@@ -22,10 +22,10 @@ class ProcessData:
         # When history stack has two elements
         # Pop elements
 
+        # TODO: Handle empty stack and a queue with one element
         first = self.receiver.history.get()  # Remove from history stack
         last = self.receiver.history.get()
         self.receiver.history.put(last)  # Put last element back to the history stack
-
 
         return [first, last]
 
@@ -53,10 +53,10 @@ class ProcessData:
         if not _ambu_behind(new_car_pos, new_ambu_pos, car_dir): return False
 
         distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0],
-               new_ambu_pos[1], new_ambu_pos[0]) 
+               new_ambu_pos[1], new_ambu_pos[0])
 
         if distance_km > 2: return False
-        
+
         return True
 
     def _find_direction(self, data1, data2):
@@ -82,21 +82,20 @@ class ProcessData:
 
     def _ambu_behind(self, car_pos, ambu_pos, direction):
         """Decide if the ambu is in front of, or behind the car
-        
+
         Keyword arguments:
-        car_pos -- tuple with latitude and longitude from newest data of car 
+        car_pos -- tuple with latitude and longitude from newest data of car
         ambu_pos -- tuple with latitude and longitude from newest data of ambu
-        direction -- Direction of the two vehicles. Must be the same after 
+        direction -- Direction of the two vehicles. Must be the same after
                         comparing in is_relevant
         """
 
         if direction.name == 'east':
-            return car_pos[0] > ambu_pos[0] 
+            return car_pos[0] > ambu_pos[0]
         if direction.name == 'west':
-            return car_pos[0] < ambu_pos[0] 
+            return car_pos[0] < ambu_pos[0]
         if direction.name == 'north':
-            return car_pos[1] > ambu_pos[1] 
+            return car_pos[1] > ambu_pos[1]
         if direction.name == 'south':
-            return car_pos[1] < ambu_pos[1] 
-        return True  
-
+            return car_pos[1] < ambu_pos[1]
+        return True
