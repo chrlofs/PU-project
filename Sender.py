@@ -25,8 +25,7 @@ class Sender:
                             self.json_data.append(j_content)  # Add content to json_data
 
     def send(self):
-        """ Sends  json data through socket
-        """
+        """Sends json data through socket."""
 
         for i in self.json_data:
             self.sock.send(str(i).encode())  # Encodes string to UTF-8 and sends through socket
