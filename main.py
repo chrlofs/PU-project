@@ -10,7 +10,7 @@ class Main:
 		self.process_data = ProcessData(self.receiver)
 
 	def run(self):
-		while True: 
+		while self.exit.run: 
 			self.receiver.update()
 			self.process_data.update()
 
@@ -18,3 +18,4 @@ class Main:
 
 main = Main()
 main.run()
+print(main.receiver.get_stack())
