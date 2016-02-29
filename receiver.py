@@ -23,6 +23,7 @@ class Receiver:
         self.position_history.put(dict_insert)
 
     def set_dict(self, temp_dict_insert):
+        """Convert received data to a dictionary."""
         if temp_dict_insert['name'] == 'longitude':
             self.temp_dict['longitude'] = str(temp_dict_insert['value'])
             self.temp_dict['timestamp'] = str(temp_dict_insert['timestamp'])
@@ -36,11 +37,12 @@ class Receiver:
                     self.temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude'])
 
     def receive(self):
+        """Receive data and convert bytes to string."""
         try:
             self.current_dict = eval(self.client_socket.recv(1024))
         except:
             self.exit.quit()
-        if(self.exit.run):
+        if self.exit.run:
             self.set_dict(self.current_dict)
             self.current_dict = None
             print(self.position_history)
