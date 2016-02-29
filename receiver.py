@@ -1,5 +1,5 @@
 import socket
-
+from exit import Exit
 
 class Receiver:
 
@@ -12,6 +12,9 @@ class Receiver:
     stack = []
     current_dict = None
     temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
+
+    def __init__(self, exit):
+        self.exit = exit
 
     def set_stack(self, dict_insert):
         if len(self.stack) >= 2:
@@ -35,14 +38,18 @@ class Receiver:
                     self.temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude'])
 
     def receive(self):
-        while True:
-            try:
-                self.current_dict = eval(self.client_socket.recv(1024))
-            except:
-                break
+        try:
+            self.current_dict = eval(self.client_socket.recv(1024))
+        except:
+            self.exit.quit()
+        if(self.exit.run):
             self.set_dict(self.current_dict)
             self.current_dict = None
             print(self.get_stack())
+
+    def update(self):
+        self.receive()
+
 
 if __name__ == "__main__":
     car = Receiver()

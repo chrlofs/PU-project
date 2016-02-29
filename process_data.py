@@ -8,6 +8,9 @@ class ProcessData:
     def __init__(self, receiver):
         self.receiver = receiver
 
+    def update():
+        #Her må vi lage en metode hvor vi prossesserer dataen
+
     def get_ambulance_data(self):
         """Return the two last data sets from Receiver
 
