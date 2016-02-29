@@ -4,8 +4,8 @@ from exit import Exit
 class Receiver:
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = '78.91.68.248'
-    port = 12000
+    host = '10.0.0.41'
+    port = 6000
     server_socket.bind((host, port))
     server_socket.listen(1)
     client_socket, address = server_socket.accept()
