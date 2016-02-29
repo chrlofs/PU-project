@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="48c6e79f-40cf-48ed-b1d9-51a8f92ca2f8" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sender_receiver_test.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Sender.py" afterPath="$PROJECT_DIR$/Sender.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/process_data_test.py" afterPath="$PROJECT_DIR$/process_data_test.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="PU-project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -16,7 +19,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PU-project$Sender.coverage" NAME="Sender Coverage Results" MODIFIED="1456750399279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PU-project$Sender.coverage" NAME="Sender Coverage Results" MODIFIED="1456750729100" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PU-project$receiver.coverage" NAME="receiver Coverage Results" MODIFIED="1456747747684" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -50,11 +53,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Sender.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Sender.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Sender.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.81">
-              <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -62,14 +65,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="process_data_test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/process_data_test.py">
+      <file leaf-file-name="sender_receiver_test.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sender_receiver_test.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="46" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
+              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="process_data_test.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/process_data_test.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.03">
+              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -92,6 +103,8 @@
         <option value="$PROJECT_DIR$/receiver.py" />
         <option value="$PROJECT_DIR$/senderReceiverTest.py" />
         <option value="$PROJECT_DIR$/Sender.py" />
+        <option value="$PROJECT_DIR$/sender_receiver_test.py" />
+        <option value="$PROJECT_DIR$/process_data_test.py" />
       </list>
     </option>
   </component>
@@ -103,8 +116,8 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="48" />
-    <option name="y" value="490" />
+    <option name="x" value="169" />
+    <option name="y" value="560" />
     <option name="width" value="1280" />
     <option name="height" value="730" />
   </component>
@@ -167,7 +180,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in process_data_test">
+  <component name="RunManager" selected="Python.Sender">
     <configuration default="false" name="receiver" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -422,8 +435,8 @@
     </list>
     <recent_temporary>
       <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in process_data_test" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Sender" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Sender" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in process_data_test" />
         <item index="2" class="java.lang.String" itemvalue="Python.receiver" />
       </list>
     </recent_temporary>
@@ -442,7 +455,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="48" y="490" width="1280" height="730" extended-state="0" />
+    <frame x="169" y="560" width="1280" height="730" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -572,23 +585,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/process_data_test.py">
+    <entry file="file://$PROJECT_DIR$/Sender.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="46" />
+          <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
           <folding>
-            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Sender.py">
+    <entry file="file://$PROJECT_DIR$/sender_receiver_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.81">
-          <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/process_data_test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.03">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
