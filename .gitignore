@@ -60,3 +60,9 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Pycharm
+*.iml
+
+# Directory-based project format:
+.idea/
