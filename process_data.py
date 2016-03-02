@@ -30,6 +30,16 @@ class ProcessData:
         return [first, last]
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
+        '''Takes in four tuples as arguments, returns whether the car should
+        be notified or not, as a boolean
+
+        Keyword arguments:
+        new_car -- A tuple containing the cars current position
+        old_car -- A tuple containing the cars previous position
+        new_ambu -- A tuple containing the ambulance current position
+        old_ambu -- A tuple containing the ambulance previous position
+        '''
+
         new_car_pos = (new_car['latitude'], new_car['longitude'])
         new_car_speed = new_car['speed']
         new_car_time = new_car['time']
