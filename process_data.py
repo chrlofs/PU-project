@@ -1,12 +1,12 @@
-from receiver import Receiver
+#from receiver import Receiver
 from Direction import Direction
 from math import fabs
 from calculator import Calculator
 
 class ProcessData:
 
-    def __init__(self, receiver):
-        self.receiver = receiver
+#    def __init__(self, receiver):
+#        self.receiver = receiver
 
     def get_ambulance_data(self):
         """Return the two last data sets from Receiver
@@ -30,7 +30,8 @@ class ProcessData:
         return [first, last]
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
-        '''Takes in four tuples as arguments, returns whether the car should
+        '''Takes in four dictionaries containing latitude, longditude and 
+        speed as arguments. Returns whether the car should
         be notified or not, as a boolean
 
         Keyword arguments:
@@ -56,11 +57,11 @@ class ProcessData:
         old_ambu_speed = old_ambu['speed']
         old_ambu_time = old_ambu['time']
 
-        car_dir = _find_direction(new_car_pos, old_car_pos)
-        ambu_dir = _find_direction(new_ambu_pos, old_ambu_pos)
+        car_dir = self._find_direction(new_car_pos, old_car_pos)
+        ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
 
         if car_dir != ambu_dir: return False
-        if not _ambu_behind(new_car_pos, new_ambu_pos, car_dir): return False
+        if not self._ambu_behind(new_car_pos, new_ambu_pos, car_dir): return False
 
         distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0],
                new_ambu_pos[1], new_ambu_pos[0])
