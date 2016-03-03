@@ -1,12 +1,12 @@
-#from receiver import Receiver
+from receiver import Receiver
 from Direction import Direction
 from math import fabs
 from calculator import Calculator
 
 class ProcessData:
 
-#    def __init__(self, receiver):
-#        self.receiver = receiver
+    def __init__(self, receiver):
+        self.receiver = receiver
 
     def get_ambulance_data(self):
         """Return the two last data sets from Receiver
