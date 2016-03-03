@@ -10,9 +10,12 @@ class Main:
 		self.process_data = ProcessData(self.receiver)
 
 	def run(self):
+		"""Check if receiver has got a new data point, if so process data
+		"""
 		while self.exit.run: 
 			self.receiver.update()
-			self.process_data.update()
+			if self.receiver.position_history.qsize() >= 2: 
+				self.process_data.update()
 
 
 
