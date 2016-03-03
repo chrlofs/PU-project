@@ -9,14 +9,14 @@ class ProcessData:
         self.receiver = receiver
 
     def get_ambulance_data(self):
-        """Return the two last data sets from Receiver
-        
+        '''Return the two last data sets from Receiver
+
         Returns
         -------
         Array containing first and last
         first -- dict containing GPS data, timestamp, speed
         last -- dict containing GPS data, timestamp, speed
-        """
+        '''
 
         first = self.receiver.position_history.get()
         last = self.receiver.position_history.get()
@@ -24,7 +24,7 @@ class ProcessData:
         return [first, last]
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
-        '''Takes in four dictionaries containing latitude, longditude and 
+        '''Takes in four dictionaries containing latitude, longditude and
         speed as arguments. Returns whether the car should
         be notified or not, as a boolean
 
@@ -65,12 +65,12 @@ class ProcessData:
         return True
 
     def _find_direction(self, data1, data2):
-        """Find direction for vehicle, returns Direction enum
+        '''Find direction for vehicle, returns Direction enum
 
         Keyword arguments:
         data1 -- tuple with latitude and longitude from newest data
         data2 -- tuple with latitude and longitude from oldest data
-        """
+        '''
 
         lat_change = data1[0] - data2[0]
         long_change = data1[1] - data2[1]
@@ -86,14 +86,14 @@ class ProcessData:
         return Direction.south
 
     def _ambu_behind(self, car_pos, ambu_pos, direction):
-        """Decide if the ambu is in front of, or behind the car
+        '''Decide if the ambu is in front of, or behind the car
 
         Keyword arguments:
         car_pos -- tuple with latitude and longitude from newest data of car
         ambu_pos -- tuple with latitude and longitude from newest data of ambu
         direction -- Direction of the two vehicles. Must be the same after
                         comparing in is_relevant
-        """
+        '''
 
         if direction.name == 'east':
             return car_pos[0] > ambu_pos[0]
