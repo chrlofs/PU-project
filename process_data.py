@@ -17,16 +17,10 @@ class ProcessData:
         first : dict containing GPS data, timestamp, speed
         last : dict containing GPS data, timestamp, speed
         """
-        # TODO: Implement listener
-
-        # When history stack has two elements
-        # Pop elements
-
-        # TODO: Handle empty stack and a queue with one element
-        first = self.receiver.history.get()  # Remove from history stack
-        last = self.receiver.history.get()
-        self.receiver.history.put(last)  # Put last element back to the history stack
-
+       
+        first = self.receiver.position_history.get()  
+        last = self.receiver.position_history.get()
+        self.receiver.position_history.put(last)  
         return [first, last]
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):

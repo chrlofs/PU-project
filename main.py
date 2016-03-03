@@ -12,6 +12,7 @@ class Main:
 	def run(self):
 		while self.exit.run: 
 			self.receiver.update()
+			if self.receiver.position_history.qsize() >= 2
 			self.process_data.update()
 
 
