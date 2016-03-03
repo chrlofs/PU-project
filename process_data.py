@@ -1,5 +1,5 @@
 from receiver import Receiver
-from Direction import Direction
+from direction import Direction
 from math import fabs
 from calculator import Calculator
 
@@ -54,13 +54,21 @@ class ProcessData:
         car_dir = self._find_direction(new_car_pos, old_car_pos)
         ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
 
-        if car_dir != ambu_dir: return False
-        if not self._ambu_behind(new_car_pos, new_ambu_pos, car_dir): return False
+        if car_dir != ambu_dir:
+            print('Car not going the same direction as ambu')
+            return False
+        if not self._ambu_behind(new_car_pos, new_ambu_pos, car_dir):
+            print ('Ambulance not behind car')
+            return False
 
         distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0],
                new_ambu_pos[1], new_ambu_pos[0])
+        '''Check that the distance isn't too great. It is currently set to a large value
+        until we decide on a threshold'''
 
-        if distance_km > 2: return False
+        if distance_km > 1000:
+            print('DISTANCE WAS OVER 1000 KM')
+            return False
 
         return True
 
