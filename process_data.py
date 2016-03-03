@@ -10,17 +10,17 @@ class ProcessData:
 
     def get_ambulance_data(self):
         """Return the two last data sets from Receiver
-
+        
         Returns
         -------
         Array containing first and last
-        first : dict containing GPS data, timestamp, speed
-        last : dict containing GPS data, timestamp, speed
+        first -- dict containing GPS data, timestamp, speed
+        last -- dict containing GPS data, timestamp, speed
         """
-       
-        first = self.receiver.position_history.get()  
+
+        first = self.receiver.position_history.get()
         last = self.receiver.position_history.get()
-        self.receiver.position_history.put(last)  
+        self.receiver.position_history.put(last)
         return [first, last]
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
