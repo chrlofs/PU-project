@@ -11,8 +11,7 @@ class ProcessData:
     def get_ambulance_data(self):
         '''Return the two last data sets from Receiver
 
-        Returns
-        -------
+        Returns:
         Array containing first and last
         first -- dict containing GPS data, timestamp, speed
         last -- dict containing GPS data, timestamp, speed
