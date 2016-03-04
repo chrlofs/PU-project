@@ -30,3 +30,16 @@ class Calculator:
         dist = R * c
 
         return dist
+
+    @staticmethod
+    def time_to_intersection(distance, ambu_speed, car_speed):
+        '''Calculates how much time is approximately left until the vehciles
+        intersect. Returns the time in minutes.
+
+        Keyword arguments:
+        distance -- distance between vehciles in kms
+        ambu_speed -- The ambulances current speed
+        car_speed -- The cars current speed
+        '''
+
+        return (distance/(ambu_speed - car_speed))*60
