@@ -81,8 +81,8 @@ class ProcessData:
         data2 -- tuple with latitude and longitude from oldest data
         """
 
-        lat_change = data1[0] - data2[0]
-        long_change = data1[1] - data2[1]
+        lat_change = data2[0] - data1[0]
+        long_change = data2[1] - data1[1]
 
         if lat_change == 0 and long_change == 0:
             return Direction.standing_still
@@ -104,12 +104,12 @@ class ProcessData:
                         comparing in is_relevant
         """
 
-        if direction.name == 'east':
-            return car_pos[0] > ambu_pos[0]
-        if direction.name == 'west':
-            return car_pos[0] < ambu_pos[0]
         if direction.name == 'north':
-            return car_pos[1] > ambu_pos[1]
+            return car_pos[0] > ambu_pos[0]
         if direction.name == 'south':
+            return car_pos[0] < ambu_pos[0]
+        if direction.name == 'east':
+            return car_pos[1] > ambu_pos[1]
+        if direction.name == 'west':
             return car_pos[1] < ambu_pos[1]
         return True
