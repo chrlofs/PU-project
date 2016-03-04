@@ -57,18 +57,19 @@ class ProcessData:
         if car_dir != ambu_dir:
             print('Car not going the same direction as ambu')
             return False
-        print (car_dir.name)
+
         if not self._ambu_behind(new_car_pos, new_ambu_pos, car_dir):
             print ('Ambulance not behind car')
             return False
 
         distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0],
                new_ambu_pos[1], new_ambu_pos[0])
-        '''Check that the distance isn't too great. It is currently set to a large value
-        until we decide on a threshold'''
 
-        if distance_km > 1000:
-            print('DISTANCE WAS OVER 1000 KM')
+        time_to_intersection = Calculator.time_to_intersection(distance_km, new_ambu_speed, new_car_speed)
+        print ('The vehicles are: ' + str(distance_km) + ' kms Appart. Time to intersect: ' + str(time_to_intersection))
+
+        if time_to_intersection > 2:
+            print('Ambulance is too far behind: ' + str(time_to_intersection))
             return False
 
         return True
