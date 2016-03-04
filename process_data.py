@@ -65,8 +65,10 @@ class ProcessData:
         distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0],
                new_ambu_pos[1], new_ambu_pos[0])
 
-        time_to_intersection = Calculator.time_to_intersection(distance_km, new_ambu_speed, new_car_speed)
-        print ('The vehicles are: ' + str(distance_km) + ' kms Appart. Time to intersect: ' + str(time_to_intersection))
+        time_to_intersection = Calculator.time_to_intersection(
+                distance_km, new_ambu_speed, new_car_speed)
+        print ('The vehicles are: ' + str(distance_km) + 
+                ' kms Appart. Time to intersect: ' + str(time_to_intersection))
 
         if time_to_intersection > 2:
             print('Ambulance is too far behind: ' + str(time_to_intersection))
