@@ -5,6 +5,10 @@ import queue
 class Receiver:
     current_dict = None
 
+    def __init__(self, exit):
+        self.exit = exit
+        self.establish_connection()
+
 
     def establish_connection(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -17,9 +21,6 @@ class Receiver:
         self.temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
 
 
-    def __init__(self, exit):
-        self.exit = exit
-        self.establish_connection()
 
     def add_to_queue(self, dict_insert):
         """Add received element to the receiver queue."""
@@ -56,8 +57,8 @@ class Receiver:
                 #self.set_dict(self.current_dict)
                 #self.current_dict = None
                 #print(self.position_history)
-
-                self.establish_connection()
+                self.server_socket.close()
+                #self.establish_connection()
 
     def update(self):
         self.receive()
