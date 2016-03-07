@@ -42,4 +42,7 @@ class Calculator:
         car_speed -- The cars current speed
         '''
 
+        if ambu_speed - car_speed <= 0:
+            return 0
+
         return (distance/(ambu_speed - car_speed))*60

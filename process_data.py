@@ -70,6 +70,9 @@ class ProcessData:
         print ('The vehicles are: ' + str(distance_km) +
                 ' kms Appart. Time to intersect: ' + str(time_to_intersection))
 
+        if time_to_intersection == 0:
+            return False
+
         if time_to_intersection > 2:
             print('Ambulance is too far behind: ' + str(time_to_intersection))
             return False
