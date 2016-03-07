@@ -3,22 +3,23 @@ import exit
 import queue
 
 class Receiver:
+    current_dict = None
+
 
     def establish_connection(self):
-        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_socket(SOL_SOCKET, SO_REUSEADDR, 1)
-        host = 'localhost'
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        host = '10.22.1.188'
         port = 6000
-        server_socket.bind((host, port))
-        server_socket.listen(1)
-        client_socket, address = server_socket.accept()
-        position_history = queue.Queue()
-        current_dict = None
-        temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
+        self.server_socket.bind((host, port))
+        self.server_socket.listen(1)
+        self.client_socket, self.address = self.server_socket.accept()
+        self.position_history = queue.Queue()
+        self.temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
 
 
     def __init__(self, exit):
         self.exit = exit
+        self.establish_connection()
 
     def add_to_queue(self, dict_insert):
         """Add received element to the receiver queue."""
