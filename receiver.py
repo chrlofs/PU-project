@@ -4,15 +4,17 @@ import queue
 
 class Receiver:
 
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = '10.22.8.14'
-    port = 6000
-    server_socket.bind((host, port))
-    server_socket.listen(1)
-    client_socket, address = server_socket.accept()
-    position_history = queue.Queue()
-    current_dict = None
-    temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
+    def establish_connection(self):
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server_socket(SOL_SOCKET, SO_REUSEADDR, 1)
+        host = 'localhost'
+        port = 6000
+        server_socket.bind((host, port))
+        server_socket.listen(1)
+        client_socket, address = server_socket.accept()
+        position_history = queue.Queue()
+        current_dict = None
+        temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
 
 
     def __init__(self, exit):
@@ -50,9 +52,11 @@ class Receiver:
                 print(copy)
             except:
                 # self.exit.quit()
-                self.set_dict(self.current_dict)
-                self.current_dict = None
-                print(self.position_history)
+                #self.set_dict(self.current_dict)
+                #self.current_dict = None
+                #print(self.position_history)
+
+                self.establish_connection()
 
     def update(self):
         self.receive()
