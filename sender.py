@@ -6,10 +6,12 @@ import json
 class Sender:
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = '10.22.9.111'  # Receiver's IP-address, must change as needed
-    port = 6001
-    sock.connect((host, port))
     json_data = []
+
+    def establish_connection(self, ip_address):
+        host = ip_address  # Receiver's IP-address, must change as needed
+        port = 6000
+        self.sock.connect((host, port))
 
     def json_list(self, file_path):
         """ Opens file and fills json_data with json objects corresponding to our filter
@@ -24,8 +26,9 @@ class Sender:
                         or j_content.get('name') == 'vehicle_speed':  # Filters relevant content
                             self.json_data.append(j_content)  # Add content to json_data
 
-    def send(self):
+    def send(self, ip_address):
         """Sends json data through socket."""
+        self.establish_connection(ip_address)
 
         for i in self.json_data:
             self.sock.send(str(i).encode())  # Encodes string to UTF-8 and sends through socket
@@ -34,4 +37,4 @@ class Sender:
 if __name__ == "__main__":
     amb = Sender()
     amb.json_list('commute.json')
-    amb.send()
+    amb.send('10.22.1.188')
