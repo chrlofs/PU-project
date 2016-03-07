@@ -1,18 +1,16 @@
 import socket
-import exit
 import queue
 
 class Receiver:
     current_dict = None
 
-    def __init__(self, exit):
-        self.exit = exit
+    def __init__(self):
         self.establish_connection()
 
 
     def establish_connection(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        host = '10.22.2.57'
+        host = '10.22.1.188'
         port = 6000
         self.server_socket.bind((host, port))
         self.server_socket.listen(1)
@@ -44,22 +42,26 @@ class Receiver:
 
     def receive(self):
         """Receive data and convert bytes to string."""
-        self.current_dict = eval(self.client_socket.recv(1024)) #Sets current_dict to the received elements from sender
-        self.add_to_queue(self.current_dict) #Adds current_dict to the queue
-        copy = []
-        for elem in list(self.position_history.queue):
-            copy.append(elem)
-        print(copy)
+        while True: #For continuous listening
+            try:
+                self.current_dict = eval(self.client_socket.recv(1024)) #Sets current_dict to the received elements from sender
+                self.add_to_queue(self.current_dict) #Adds current_dict to the queue
+                copy = []
+                for elem in list(self.position_history.queue):
+                    copy.append(elem)
+                print(copy)
+            except:
+                # self.exit.quit()
+                #self.set_dict(self.current_dict)
+                #self.current_dict = None
+                #print(self.position_history)
+                self.server_socket.close()
+                #self.establish_connection()
 
     def update(self):
-        while True:
-            try:
-                self.receive()
-            except:
-                self.server_socket.close()
-
+        self.receive()
 
 if __name__ == "__main__":
-    car = Receiver(exit)
+    car = Receiver()
     car.receive()
     print(car.position_history.get())
