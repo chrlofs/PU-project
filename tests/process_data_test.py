@@ -1,11 +1,12 @@
-import process_data
+from process_data import ProcessData
+import unittest
 
 
 class TestProcessDataMethods(unittest.TestCase):
 
 	def test_get_data_from_stack(self):
 		"""Add data to Receiver and get data with get_ambulance_data()"""
-		process = process_data.ProcessData()
+		process = ProcessData()
 		dict1 = {longitude: 101010, altitude: 101010, time: 12123123, speed: 12}
 		dict2 = {longitude: 101020, altitude: 101020, time: 12123123, speed: 30}
 		process.receive.history.put(dict1)
