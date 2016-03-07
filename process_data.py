@@ -54,13 +54,25 @@ class ProcessData:
         car_dir = self._find_direction(new_car_pos, old_car_pos)
         ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
 
-        if car_dir != ambu_dir: return False
-        if not self._ambu_behind(new_car_pos, new_ambu_pos, car_dir): return False
+        if car_dir != ambu_dir:
+            print('Car not going the same direction as ambu')
+            return False
+
+        if not self._ambu_behind(new_car_pos, new_ambu_pos, car_dir):
+            print ('Ambulance not behind car')
+            return False
 
         distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0],
                new_ambu_pos[1], new_ambu_pos[0])
 
-        if distance_km > 2: return False
+        time_to_intersection = Calculator.time_to_intersection(
+                distance_km, new_ambu_speed, new_car_speed)
+        print ('The vehicles are: ' + str(distance_km) + 
+                ' kms Appart. Time to intersect: ' + str(time_to_intersection))
+
+        if time_to_intersection > 2:
+            print('Ambulance is too far behind: ' + str(time_to_intersection))
+            return False
 
         return True
 
@@ -72,18 +84,18 @@ class ProcessData:
         data2 -- tuple with latitude and longitude from oldest data
         """
 
-        lat_change = data1[0] - data2[0]
-        long_change = data1[1] - data2[1]
+        lat_change = data2[0] - data1[0]
+        long_change = data2[1] - data1[1]
 
         if lat_change == 0 and long_change == 0:
             return Direction.standing_still
         if fabs(lat_change) > fabs(long_change):
             if lat_change > 0:
-                return Direction.east
-            return Direction.west
+                return Direction.north
+            return Direction.south
         if long_change > 0:
-            return Direction.north
-        return Direction.south
+            return Direction.east
+        return Direction.west
 
     def _ambu_behind(self, car_pos, ambu_pos, direction):
         """Decide if the ambu is in front of, or behind the car
@@ -95,12 +107,12 @@ class ProcessData:
                         comparing in is_relevant
         """
 
-        if direction.name == 'east':
-            return car_pos[0] > ambu_pos[0]
-        if direction.name == 'west':
-            return car_pos[0] < ambu_pos[0]
         if direction.name == 'north':
-            return car_pos[1] > ambu_pos[1]
+            return car_pos[0] > ambu_pos[0]
         if direction.name == 'south':
+            return car_pos[0] < ambu_pos[0]
+        if direction.name == 'east':
+            return car_pos[1] > ambu_pos[1]
+        if direction.name == 'west':
             return car_pos[1] < ambu_pos[1]
         return True

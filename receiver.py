@@ -1,11 +1,12 @@
 import socket
-from exit import Exit
+import exit
+import queue
 
 class Receiver:
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = '197.0.0.1'
-    port = 3000
+    host = '10.22.8.14'
+    port = 6000
     server_socket.bind((host, port))
     server_socket.listen(1)
     client_socket, address = server_socket.accept()
@@ -13,12 +14,13 @@ class Receiver:
     current_dict = None
     temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
 
+
     def __init__(self, exit):
         self.exit = exit
 
     def add_to_queue(self, dict_insert):
         """Add received element to the receiver queue."""
-        if self.position_history.qsize() > 2:
+        if self.position_history.qsize() >= 2:
             self.position_history.get()
         self.position_history.put(dict_insert)
 
@@ -38,19 +40,24 @@ class Receiver:
 
     def receive(self):
         """Receive data and convert bytes to string."""
-        try:
-            self.current_dict = eval(self.client_socket.recv(1024))
-        except:
-            self.exit.quit()
-        if self.exit.run:
-            self.set_dict(self.current_dict)
-            self.current_dict = None
-            print(self.position_history)
+        while True: #For continuous listening
+            try:
+                self.current_dict = eval(self.client_socket.recv(1024)) #Sets current_dict to the received elements from sender
+                self.add_to_queue(self.current_dict) #Adds current_dict to the queue
+                copy = []
+                for elem in list(self.position_history.queue):
+                    copy.append(elem)
+                print(copy)
+            except:
+                self.exit.quit()
+                self.set_dict(self.current_dict)
+                self.current_dict = None
+                print(self.position_history)
 
     def update(self):
         self.receive()
 
 if __name__ == "__main__":
-    car = Receiver()
+    car = Receiver(exit)
     car.receive()
-    print(car.get_stack())
+    print(car.position_history.get())
