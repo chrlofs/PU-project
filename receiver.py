@@ -49,7 +49,7 @@ class Receiver:
                     copy.append(elem)
                 print(copy)
             except:
-                self.exit.quit()
+                # self.exit.quit()
                 self.set_dict(self.current_dict)
                 self.current_dict = None
                 print(self.position_history)

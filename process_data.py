@@ -9,22 +9,22 @@ class ProcessData:
         self.receiver = receiver
 
     def get_ambulance_data(self):
-        """Return the two last data sets from Receiver
-        
+        '''Return the two last data sets from Receiver
+
         Returns
         -------
         Array containing first and last
-        first -- dict containing GPS data, timestamp, speed
-        last -- dict containing GPS data, timestamp, speed
-        """
+        old_ambu -- dict containing GPS data, timestamp, speed
+        new_ambu -- dict containing GPS data, timestamp, speed
+        '''
 
-        first = self.receiver.position_history.get()
-        last = self.receiver.position_history.get()
-        self.receiver.position_history.put(last)
-        return [first, last]
+        new_ambu = self.receiver.position_history.get()
+        old_ambu = self.receiver.position_history.get()
+        self.receiver.position_history.put(old_ambu)
+        return [new_ambu, old_ambu]
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
-        '''Takes in four dictionaries containing latitude, longditude and 
+        '''Takes in four dictionaries containing latitude, longditude and
         speed as arguments. Returns whether the car should
         be notified or not, as a boolean
 
@@ -67,7 +67,7 @@ class ProcessData:
 
         time_to_intersection = Calculator.time_to_intersection(
                 distance_km, new_ambu_speed, new_car_speed)
-        print ('The vehicles are: ' + str(distance_km) + 
+        print ('The vehicles are: ' + str(distance_km) +
                 ' kms Appart. Time to intersect: ' + str(time_to_intersection))
 
         if time_to_intersection > 2:
