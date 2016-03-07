@@ -2,6 +2,17 @@ from process_data import ProcessData
 import unittest
 
 class TestIsRelevant(unittest.TestCase):
+
+    def test_same_coordinates(self):
+        print('\nTesting: ' + 'test_same_coordinates')
+        pd = ProcessData()
+        res = pd.is_relevant(
+                {'longitude' : 38.8888, 'latitude' : 38.8888, 'speed' : 80, 'time' : 20},
+                {'longitude' : 38.8888, 'latitude' : 38.8888, 'speed' : 80, 'time' : 25},
+                {'longitude' : 38.8888, 'latitude' : 38.8888, 'speed' : 200, 'time' : 20},
+                {'longitude' : 38.8888, 'latitude' : 38.8888, 'speed' : 200, 'time' : 25},
+        )
+        self.assertFalse(res)
     
     def test_car_ahead_going_south(self):
         print('\nTesting: ' + 'test_car_ahead_going_south')
