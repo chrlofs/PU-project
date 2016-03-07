@@ -1,5 +1,5 @@
 from receiver import Receiver
-from Direction import Direction
+from direction import Direction
 from math import fabs
 from calculator import Calculator
 
