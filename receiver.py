@@ -1,22 +1,24 @@
 import socket
-import exit
 import queue
 
 class Receiver:
-
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = '10.22.8.14'
-    port = 6000
-    server_socket.bind((host, port))
-    server_socket.listen(1)
-    client_socket, address = server_socket.accept()
-    position_history = queue.Queue()
     current_dict = None
-    temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
+
+    def __init__(self):
+        self.establish_connection()
 
 
-    def __init__(self, exit):
-        self.exit = exit
+    def establish_connection(self):
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        host = '10.22.1.188'
+        port = 6000
+        self.server_socket.bind((host, port))
+        self.server_socket.listen(1)
+        self.client_socket, self.address = self.server_socket.accept()
+        self.position_history = queue.Queue()
+        self.temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
+
+
 
     def add_to_queue(self, dict_insert):
         """Add received element to the receiver queue."""
@@ -50,14 +52,16 @@ class Receiver:
                 print(copy)
             except:
                 # self.exit.quit()
-                self.set_dict(self.current_dict)
-                self.current_dict = None
-                print(self.position_history)
+                #self.set_dict(self.current_dict)
+                #self.current_dict = None
+                #print(self.position_history)
+                self.server_socket.close()
+                #self.establish_connection()
 
     def update(self):
         self.receive()
 
 if __name__ == "__main__":
-    car = Receiver(exit)
+    car = Receiver()
     car.receive()
     print(car.position_history.get())

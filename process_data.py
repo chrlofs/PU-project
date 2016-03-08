@@ -53,6 +53,9 @@ class ProcessData:
 
         car_dir = self._find_direction(new_car_pos, old_car_pos)
         ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
+        
+        if new_ambu_speed <= 0:
+            return False
 
         if car_dir != ambu_dir:
             print('Car not going the same direction as ambu')
@@ -69,6 +72,9 @@ class ProcessData:
                 distance_km, new_ambu_speed, new_car_speed)
         print ('The vehicles are: ' + str(distance_km) +
                 ' kms Appart. Time to intersect: ' + str(time_to_intersection))
+
+        if time_to_intersection == 0:
+            return False
 
         if time_to_intersection > 2:
             print('Ambulance is too far behind: ' + str(time_to_intersection))
