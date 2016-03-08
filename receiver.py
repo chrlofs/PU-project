@@ -10,7 +10,7 @@ class Receiver:
 
     def establish_connection(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        host = '10.22.1.188'
+        host = 'localhost'
         port = 6000
         self.server_socket.bind((host, port))
         self.server_socket.listen(1)
@@ -56,10 +56,16 @@ class Receiver:
                 #self.current_dict = None
                 #print(self.position_history)
                 self.server_socket.close()
+                break
                 #self.establish_connection()
+        self.retry_connection()
 
     def update(self):
         self.receive()
+
+    def retry_connection(self):
+        self.establish_connection()
+        self.update()
 
 if __name__ == "__main__":
     car = Receiver()
