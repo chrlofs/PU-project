@@ -14,7 +14,5 @@ class TestSenderReceiverMethods(unittest.TestCase):
 
 
 
-
-
-
-
+suite = unittest.TestLoader().loadTestsFromTestCase(TestSenderReceiverMethods)
+unittest.TextTestRunner(verbosity=2).run(suite)
