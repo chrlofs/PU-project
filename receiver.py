@@ -1,7 +1,9 @@
 import socket
 import queue
 
+
 class Receiver:
+
     current_dict = None
 
     def __init__(self):
@@ -9,6 +11,8 @@ class Receiver:
 
 
     def establish_connection(self):
+        """Set up a new socket connection."""
+
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         host = 'localhost'
         port = 6000
@@ -21,13 +25,23 @@ class Receiver:
 
 
     def add_to_queue(self, dict_insert):
-        """Add received element to the receiver queue."""
+        """Add received element to the receiver queue.
+
+        Keyword arguments:
+        dict_insert -- dict containing GPS data and timestamp
+        """
+
         if self.position_history.qsize() >= 2:
             self.position_history.get()
         self.position_history.put(dict_insert)
 
     def set_dict(self, temp_dict_insert):
-        """Convert received data to a dictionary."""
+        """Convert and merge received data to a dictionary.
+
+        Keyword arguments:
+        temp_dict_insert -- dict containing longitude, latitude or timestamp
+        """
+
         if temp_dict_insert['name'] == 'longitude':
             self.temp_dict['longitude'] = str(temp_dict_insert['value'])
             self.temp_dict['timestamp'] = str(temp_dict_insert['timestamp'])
@@ -42,30 +56,18 @@ class Receiver:
 
     def receive(self):
         """Receive data and convert bytes to string."""
-        while True: #For continuous listening
+
+        while True:  # For continuous listening
             try:
-                self.current_dict = eval(self.client_socket.recv(1024)) #Sets current_dict to the received elements from sender
-                self.add_to_queue(self.current_dict) #Adds current_dict to the queue
+                self.current_dict = eval(self.client_socket.recv(1024))  # Sets current_dict to the received elements from sender
+                self.add_to_queue(self.current_dict)  # Adds current_dict to the queue
                 copy = []
                 for elem in list(self.position_history.queue):
                     copy.append(elem)
                 print(copy)
             except:
-                # self.exit.quit()
-                #self.set_dict(self.current_dict)
-                #self.current_dict = None
-                #print(self.position_history)
                 self.server_socket.close()
                 break
-                #self.establish_connection()
-        self.retry_connection()
-
-    def update(self):
-        self.receive()
-
-    def retry_connection(self):
-        self.establish_connection()
-        self.update()
 
 if __name__ == "__main__":
     car = Receiver()
