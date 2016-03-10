@@ -1,5 +1,6 @@
 import socket
-import queue
+from collections import deque
+
 
 class Receiver:
     current_dict = None
@@ -15,16 +16,16 @@ class Receiver:
         self.server_socket.bind((host, port))
         self.server_socket.listen(1)
         self.client_socket, self.address = self.server_socket.accept()
-        self.position_history = queue.Queue()
+        self.position_history = deque()
         self.temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
 
 
 
     def add_to_queue(self, dict_insert):
         """Add received element to the receiver queue."""
-        if self.position_history.qsize() >= 2:
-            self.position_history.get()
-        self.position_history.put(dict_insert)
+        if self.position_history.count() >= 2:
+            self.position_history.pop()
+        self.position_history.appendleft(dict_insert)
 
     def set_dict(self, temp_dict_insert):
         """Convert received data to a dictionary."""
@@ -47,7 +48,7 @@ class Receiver:
                 self.current_dict = eval(self.client_socket.recv(1024)) #Sets current_dict to the received elements from sender
                 self.add_to_queue(self.current_dict) #Adds current_dict to the queue
                 copy = []
-                for elem in list(self.position_history.queue):
+                for elem in self.position_history:
                     copy.append(elem)
                 print(copy)
             except:
@@ -70,4 +71,4 @@ class Receiver:
 if __name__ == "__main__":
     car = Receiver()
     car.receive()
-    print(car.position_history.get())
+    print(car.position_history)
