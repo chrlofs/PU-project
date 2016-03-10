@@ -10,7 +10,7 @@ class TestSenderReceiverMethods(unittest.TestCase):
         '''Tests for valid content in the list'''
 
         self.sender = Sender()
-        self.sender.json_list('Ambulance/Testdata/commute_test.json')
+        self.sender.json_list('ambulance/testdata/commute_test.json')
         self.assertTrue(all(p['name'] == "longitude" or p['name'] == "latitude"\
             or p['name'] == "vehicle_speed") for p in self.sender.json_data)
 
