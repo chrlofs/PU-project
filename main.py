@@ -6,7 +6,7 @@ from exit import Exit
 class Main:
 
 	def __init__(self):
-		self.receiver = Receiver(exit)
+		self.receiver = Receiver()
 		self.process_data = ProcessData(self.receiver)
 
 	def run(self):
