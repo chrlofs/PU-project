@@ -1,5 +1,4 @@
 import socket
-import exit
 import queue
 import connection
 

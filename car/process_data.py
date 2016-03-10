@@ -1,7 +1,7 @@
-from receiver import Receiver
-from direction import Direction
+from .receiver import Receiver
+from .direction import Direction
 from math import fabs
-from calculator import Calculator
+from .support.calculator import Calculator
 
 class ProcessData:
 
