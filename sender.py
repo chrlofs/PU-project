@@ -2,13 +2,10 @@ import socket
 import time
 import json
 
-
 class Sender:
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     json_data = []
-
-
 
     def establish_connection(self, ip_address):
         '''Creates socket to host
