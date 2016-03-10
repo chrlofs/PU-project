@@ -11,9 +11,8 @@ class ProcessData:
     def get_ambulance_data(self):
         '''Return the two last data sets from Receiver
 
-        Returns
-        -------
-        Array containing first and last
+        Returns:
+        Array containing data from the ambulance
         old_ambu -- dict containing GPS data, timestamp, speed
         new_ambu -- dict containing GPS data, timestamp, speed
         '''
@@ -53,7 +52,7 @@ class ProcessData:
 
         car_dir = self._find_direction(new_car_pos, old_car_pos)
         ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
-        
+
         if new_ambu_speed <= 0:
             return False
 
@@ -83,12 +82,12 @@ class ProcessData:
         return True
 
     def _find_direction(self, data1, data2):
-        """Find direction for vehicle, returns Direction enum
+        '''Find direction for vehicle, returns Direction enum
 
         Keyword arguments:
         data1 -- tuple with latitude and longitude from newest data
         data2 -- tuple with latitude and longitude from oldest data
-        """
+        '''
 
         lat_change = data2[0] - data1[0]
         long_change = data2[1] - data1[1]
@@ -104,14 +103,14 @@ class ProcessData:
         return Direction.west
 
     def _ambu_behind(self, car_pos, ambu_pos, direction):
-        """Decide if the ambu is in front of, or behind the car
+        '''Decide if the ambu is in front of, or behind the car
 
         Keyword arguments:
         car_pos -- tuple with latitude and longitude from newest data of car
         ambu_pos -- tuple with latitude and longitude from newest data of ambu
         direction -- Direction of the two vehicles. Must be the same after
                         comparing in is_relevant
-        """
+        '''
 
         if direction.name == 'north':
             return car_pos[0] > ambu_pos[0]
