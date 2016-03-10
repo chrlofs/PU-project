@@ -9,9 +9,10 @@ class TestSenderReceiverMethods(unittest.TestCase):
     def test_list_content(self):
         '''Tests for valid content in the list'''
 
-        sender.Sender().json_list('commute_test.json')
+        self.sender = sender.Sender()
+        self.sender.json_list('commute_test.json')
         self.assertTrue(all(p['name'] == "longitude" or p['name'] == "latitude"\
-            or p['name'] == "vehicle_speed") for p in sender.Sender().json_data)
+            or p['name'] == "vehicle_speed") for p in self.sender.json_data)
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestSenderReceiverMethods)
 unittest.TextTestRunner(verbosity=2).run(suite)
