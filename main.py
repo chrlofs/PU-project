@@ -1,6 +1,5 @@
-from receiver import Receiver
-from process_data import ProcessData
-from exit import Exit
+from Car.receiver import Receiver
+from Car.process_data import ProcessData
 
 
 class Main:
