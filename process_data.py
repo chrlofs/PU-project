@@ -17,9 +17,9 @@ class ProcessData:
         new_ambu -- dict containing GPS data, timestamp, speed
         '''
 
-        new_ambu = self.receiver.position_history.get()
-        old_ambu = self.receiver.position_history.get()
-        self.receiver.position_history.put(old_ambu)
+        new_ambu = self.receiver.position_history.pop()
+        old_ambu = self.receiver.position_history.pop()
+        self.receiver.position_history.appendleft(old_ambu)
         return [new_ambu, old_ambu]
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
