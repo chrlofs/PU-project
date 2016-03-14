@@ -7,7 +7,7 @@ class Car:
     json_data = []
 
     def __init__(self):
-        self.json_list('commute.json')
+        self.json_list('GPS.json')
         self.get_data()
 
     def json_list(self, file_path):
