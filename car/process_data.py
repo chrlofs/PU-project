@@ -22,6 +22,24 @@ class ProcessData:
         self.receiver.position_history.appendleft(old_ambu)
         return [new_ambu, old_ambu]
 
+    def pick_message(self, new_car, old_car, new_ambu, old_ambu):
+        '''Checks if the current data is relevant, and returns a integer 
+        for each case
+
+        Keyword arguments:
+        new_car -- A tuple containing the cars current position
+        old_car -- A tuple containing the cars previous position
+        new_ambu -- A tuple containing the ambulance current position
+        old_ambu -- A tuple containing the ambulance previous position
+        
+        returns
+        0 if the situation is not relevant
+        1 if ...
+        '''
+
+        if not is_relevant(self, new_car, old_car, new_ambu, old_ambu):
+            return 0
+
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
         '''Takes in four dictionaries containing latitude, longditude and
         speed as arguments. Returns whether the car should
