@@ -6,6 +6,7 @@ class Car:
     '''docstring for car'''
 
     json_data = []
+    json_reversed = []
     position_history = deque()
     format_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
 
@@ -51,6 +52,13 @@ class Car:
                 self.format_dict["timestamp"] is not None:
                     self.add_to_queue()
                     self.format_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude'])
+
+    def create_opposite(self, file_path):
+        self.json_list(file_path)
+        for i in reversed(self.json_data):
+            self.json_reversed.append(i)
+        return self.json_reversed
+
 
     def add_to_queue(self):
         if len(self.position_history) >= 2:
