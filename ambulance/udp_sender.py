@@ -20,3 +20,9 @@ try:
     # Send a test message
     # First convert message to bytes
     sock.sendto(bytes(message, 'UTF-8'), (ip, port))
+
+except socket.error as e:
+    prrint('Error code: ' + str(e[0]) + ' Message ' + str(e[1]))
+    sys.exit()
+
+print('Program complete')
