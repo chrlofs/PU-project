@@ -1,7 +1,7 @@
 import socket
 import sys
 
-ip = 'localhost'
+ip = '10.24.7.120'
 port = 10000
 
 # Create a UDP socket
