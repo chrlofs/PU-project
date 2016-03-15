@@ -5,6 +5,7 @@ import json
 class test_car(unittest.TestCase):
 
     def test_data(self):
+        '''tests set_data & get_data'''
         print('\nTesting: get and set data')
         self.car = Car()
         self.car.set_data()

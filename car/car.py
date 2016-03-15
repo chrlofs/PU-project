@@ -13,10 +13,6 @@ class Car:
     def __init__(self):
         self.json_list('GPS.json')
 
-    #def __init__(self, file_path):
-    #    self.json_list(file_path)
-    #    self.get_data()
-
     def modify_json(self):
         '''Modifies a json file to be filled with garble every 5 lines.'''
 
@@ -29,7 +25,7 @@ class Car:
                         json.dump(json.loads(line), outfile)
                         outfile.write('\n')
                         json.dump({"name":"longitude","value":0,"timestamp":0},
-                                    outfile)
+                                  outfile)
                         outfile.write('\n')
                     else:
                         json.dump(json.loads(line), outfile)
@@ -82,7 +78,6 @@ class Car:
             self.json_reversed.append(i)
         return self.json_reversed
 
-
     def add_to_queue(self):
         self.position_history.appendleft(self.format_dict)
 
@@ -97,13 +92,11 @@ class Car:
     def get_data(self):
         '''Returns the two last datasets from position_history'''
 
-         if len(self.position_history) > 1:
-             old_car = self.position_history.pop()
-             new_car = self.position_history.pop()
-             self.position_history.append(new_car)
-             return [new_car, old_car]
-
-
+        if len(self.position_history) > 1:
+            old_car = self.position_history.pop()
+            new_car = self.position_history.pop()
+            self.position_history.append(new_car)
+            return [new_car, old_car]
 
 if __name__ == "__main__":
     car = Car()
