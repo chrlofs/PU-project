@@ -3,12 +3,12 @@ import json
 from collections import deque
 
 class Car:
-    '''docstring for car'''
 
     json_data = []
     json_reversed = []
     position_history = deque()
-    format_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
+    format_dict = dict.fromkeys(['timestamp', 'longitude',
+                                'latitude', 'vehicle_speed'])
 
     def __init__(self):
         self.json_list('GPS.json')
@@ -18,6 +18,8 @@ class Car:
     #    self.get_data()
 
     def modify_json(self):
+        '''Modifies a json file to be filled with garble every 5 lines.'''
+
         with open('GPS.json') as f:
             with open('data.json', 'w') as outfile:
                 counter = 0
@@ -26,7 +28,8 @@ class Car:
                         counter = 0
                         json.dump(json.loads(line), outfile)
                         outfile.write('\n')
-                        json.dump({"name":"longitude","value":0,"timestamp":0}, outfile)
+                        json.dump({"name":"longitude","value":0,"timestamp":0},
+                                    outfile)
                         outfile.write('\n')
                     else:
                         json.dump(json.loads(line), outfile)
@@ -51,11 +54,11 @@ class Car:
                             self.json_data.append(j_content)
 
     def set_dict(self, format_dict_insert):
-        """Convert and merge received data to a dictionary.
+        '''Convert and merge received data to a dictionary.
 
         Keyword arguments:
         format_dict_insert -- dict containing longitude, latitude or timestamp
-        """
+        '''
 
         if format_dict_insert['name'] == 'longitude':
             self.format_dict['longitude'] = str(format_dict_insert['value'])
@@ -64,12 +67,16 @@ class Car:
             self.format_dict['latitude'] = str(format_dict_insert['value'])
         elif format_dict_insert['name'] == 'vehicle_speed':
             self.format_dict['vehicle_speed'] = str(format_dict_insert['value'])
-        if self.format_dict["longitude"] is not None and self.format_dict["latitude"] is not None and \
+        if self.format_dict["longitude"] is not None and \
+                self.format_dict["latitude"] is not None and \
                 self.format_dict["timestamp"] is not None:
                     self.add_to_queue()
-                    self.format_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude'])
+                    self.format_dict = dict.fromkeys(['timestamp',
+                                                    'longitude', 'latitude'])
 
     def create_opposite(self, file_path):
+        '''Reverses a json-file and returns it'''
+
         self.json_list(file_path)
         for i in reversed(self.json_data):
             self.json_reversed.append(i)
@@ -80,16 +87,20 @@ class Car:
         self.position_history.appendleft(self.format_dict)
 
     def set_data(self):
+        '''Adds entire trip to local variable position_history'''
+
         for i in self.json_data:
             self.set_dict(i)
 
-        #print(self.position_history)
+        print(self.position_history)
 
     def get_data(self):
+        '''Returns the two last datasets from position_history'''
+
          if len(self.position_history) > 1:
-             new_car = self.position_history.popleft()
-             old_car = self.position_history.popleft()
-             self.position_history.appendleft(old_car)
+             old_car = self.position_history.pop()
+             new_car = self.position_history.pop()
+             self.position_history.append(new_car)
              return [new_car, old_car]
 
 
@@ -98,10 +109,8 @@ if __name__ == "__main__":
     car = Car()
     # print(car.create_opposite('GPS.json'))
     car.set_data()
-    print(car.position_history)
     print('Resultat')
     print(car.get_data())
     print(car.get_data())
     print(car.get_data())
     time.sleep(0.30)
-    car.modify_json()
