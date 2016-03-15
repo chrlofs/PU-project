@@ -61,17 +61,29 @@ class Car:
 
 
     def add_to_queue(self):
-        if len(self.position_history) >= 2:
-            self.position_history.pop()
-        self.position_history.appendleft(self.json_data)
+        self.position_history.appendleft(self.format_dict)
 
-    def get_data(self):
+    def set_data(self):
         for i in self.json_data:
             self.set_dict(i)
-            print(self.format_dict)
+
+        print(self.position_history)
+
+    def get_data(self):
+         if len(self.position_history) > 1:
+             old_car = self.position_history.pop()
+             new_car = self.position_history.pop()
+             self.position_history.append(new_car)
+             return [new_car, old_car]
+
 
 
 if __name__ == "__main__":
     car = Car()
-    car.get_data()
+    # print(car.create_opposite('GPS.json'))
+    car.set_data()
+    print('Resultat')
+    print(car.get_data())
+    print(car.get_data())
+    print(car.get_data())
     time.sleep(0.30)
