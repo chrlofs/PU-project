@@ -37,36 +37,45 @@ class ProcessData:
         1 if ...
         '''
 
-        if not is_relevant(self, new_car, old_car, new_ambu, old_ambu):
-            return 0
-
-    def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
-        '''Takes in four dictionaries containing latitude, longditude and
-        speed as arguments. Returns whether the car should
-        be notified or not, as a boolean
-
-        Keyword arguments:
-        new_car -- A tuple containing the cars current position
-        old_car -- A tuple containing the cars previous position
-        new_ambu -- A tuple containing the ambulance current position
-        old_ambu -- A tuple containing the ambulance previous position
-        '''
-
         new_car_pos = (new_car['latitude'], new_car['longitude'])
-        new_car_speed = new_car['speed']
+        car_speed = new_car['speed']
         new_car_time = new_car['time']
 
         old_car_pos = (old_car['latitude'], old_car['longitude'])
-        old_car_speed = old_car['speed']
         old_car_time = old_car['time']
 
         new_ambu_pos = (new_ambu['latitude'], new_ambu['longitude'])
-        new_ambu_speed = new_ambu['speed']
+        ambu_speed = new_ambu['speed']
         new_ambu_time = new_ambu['time']
 
         old_ambu_pos = (old_ambu['latitude'], old_ambu['longitude'])
-        old_ambu_speed = old_ambu['speed']
+        ambu_speed = old_ambu['speed']
         old_ambu_time = old_ambu['time']
+
+        car_dir = self._find_direction(new_car_pos, old_car_pos)
+        ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
+
+        if not _is_relevant(new_car_pos, car_speed, old_car_pos, 
+            new_ambu_pos, ambu_speed, old_ambu_pos):
+            return 0
+
+    def _is_relevant(new_car_pos, car_speed, old_car_pos, 
+            new_ambu_pos, ambu_speed, old_ambu_pos):
+        '''Takes in the car and the ambulances current and previous postition. 
+        Returns whether the car should be notified or not, as a boolean
+
+        Keyword arguments:
+        new_car_pos -- A tuple containing the cars current position
+                        latitude first, longitude second
+        car_speed -- A float containing the cars current speed 
+        old_car_pos -- A tuple containing the cars previous position
+                        latitude first, longitude second
+        new_ambu_pos -- A tuple containing the ambulance current position
+                        latitude first, longitude second
+        ambu_speed -- A float containing the ambulances current speed
+        old_ambu_pos -- A tuple containing the ambulance previous position
+                        latitude first, longitude second
+        '''
 
         car_dir = self._find_direction(new_car_pos, old_car_pos)
         ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
@@ -127,7 +136,7 @@ class ProcessData:
         car_pos -- tuple with latitude and longitude from newest data of car
         ambu_pos -- tuple with latitude and longitude from newest data of ambu
         direction -- Direction of the two vehicles. Must be the same after
-                        comparing in is_relevant
+                        comparing in _is_relevant
         '''
 
         if direction.name == 'north':
