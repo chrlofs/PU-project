@@ -17,6 +17,22 @@ class Car:
     #    self.json_list(file_path)
     #    self.get_data()
 
+    def modify_json(self):
+        with open('GPS.json') as f:
+            with open('data.json', 'w') as outfile:
+                counter = 0
+                for line in f:
+                    if counter > 4:
+                        counter = 0
+                        json.dump(json.loads(line), outfile)
+                        outfile.write('\n')
+                        json.dump({"name":"longitude","value":0,"timestamp":0}, outfile)
+                        outfile.write('\n')
+                    else:
+                        json.dump(json.loads(line), outfile)
+                        outfile.write('\n')
+                        counter += 1
+
     def json_list(self, file_path):
         '''Opens file and fills json_data with json
         objects corresponding to our filter
@@ -87,3 +103,4 @@ if __name__ == "__main__":
     print(car.get_data())
     print(car.get_data())
     time.sleep(0.30)
+    car.modify_json()
