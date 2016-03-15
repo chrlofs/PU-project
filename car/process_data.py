@@ -7,6 +7,12 @@ class ProcessData:
 
     def __init__(self, receiver):
         self.receiver = receiver
+        self.messages = ['',
+                'There is an ambulance less than 20 seconds behind you. \
+                        Please pull over to the side.',
+                'There is an ambulance approaching you in approximately 2 \
+                        minutes. Please be ready to pull over to the side.',
+                'Thank you. Please remember do drive safely.']
 
     def get_ambulance_data(self):
         '''Return the two last data sets from Receiver
@@ -34,30 +40,44 @@ class ProcessData:
         
         returns
         0 if the situation is not relevant
-        1 if ...
+        1 if the ambulance is less than 20 sec behind
+        2 if the ambulance is less than 2 minutes behind
+        3 if the amulance just passed the car and is less than 50 meters ahead
         '''
 
         new_car_pos = (new_car['latitude'], new_car['longitude'])
         car_speed = new_car['speed']
-        new_car_time = new_car['time']
-
         old_car_pos = (old_car['latitude'], old_car['longitude'])
-        old_car_time = old_car['time']
 
         new_ambu_pos = (new_ambu['latitude'], new_ambu['longitude'])
         ambu_speed = new_ambu['speed']
-        new_ambu_time = new_ambu['time']
-
         old_ambu_pos = (old_ambu['latitude'], old_ambu['longitude'])
-        ambu_speed = old_ambu['speed']
-        old_ambu_time = old_ambu['time']
 
         car_dir = self._find_direction(new_car_pos, old_car_pos)
         ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
 
+        distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0],
+               new_ambu_pos[1], new_ambu_pos[0])
+
         if not _is_relevant(new_car_pos, car_speed, old_car_pos, 
             new_ambu_pos, ambu_speed, old_ambu_pos):
+
+            #0.05km is 50 meters.
+            if distance_km > -0.05 and distance_km < 0 \
+                    and car_dir.name == ambu_dir.name:
+                return 3
             return 0
+
+        time_to_intersection = Calculator.time_to_intersection(
+                distance_km, new_ambu_speed, new_car_speed)
+        print ('The vehicles are: ' + str(distance_km) +
+                ' kms Appart. Time to intersect: ' + str(time_to_intersection))
+
+        #time to intersection is less than 20 sec, 1/3 of a minute
+        if time_to_intersection <= (1/3):
+            return 1
+        if time_to_intersection <= 2:
+            return 2
 
     def _is_relevant(new_car_pos, car_speed, old_car_pos, 
             new_ambu_pos, ambu_speed, old_ambu_pos):
