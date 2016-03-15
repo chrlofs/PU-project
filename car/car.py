@@ -83,13 +83,13 @@ class Car:
         for i in self.json_data:
             self.set_dict(i)
 
-        print(self.position_history)
+        #print(self.position_history)
 
     def get_data(self):
          if len(self.position_history) > 1:
-             old_car = self.position_history.pop()
-             new_car = self.position_history.pop()
-             self.position_history.append(new_car)
+             new_car = self.position_history.popleft()
+             old_car = self.position_history.popleft()
+             self.position_history.appendleft(old_car)
              return [new_car, old_car]
 
 
@@ -98,6 +98,7 @@ if __name__ == "__main__":
     car = Car()
     # print(car.create_opposite('GPS.json'))
     car.set_data()
+    print(car.position_history)
     print('Resultat')
     print(car.get_data())
     print(car.get_data())
