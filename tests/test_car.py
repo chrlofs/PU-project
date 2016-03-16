@@ -18,12 +18,10 @@ class test_car(unittest.TestCase):
         '''Tests create_opposite'''
 
         print('\nTesting: reversed list')
-        self.normalcar = Car()
-        self.reversedcar = Car('reversed')
-        print(self.normalcar.position_history[0])
-        print(self.reversedcar.position_history[len(self.reversedcar.position_history)-1])
+        normalcar = Car()
+        reversedcar = Car('reversed')
 
-        #self.assertEqual(self.normalcar.position_history.pop(), self.reversedcar.position_history.popleft())
+        self.assertEqual(normalcar.position_history.pop(), reversedcar.position_history.popleft())
 
 
 

@@ -7,20 +7,17 @@ class Car:
     def __init__(self, modification='normal'):
         self.json_data = []
         self.position_history = deque()
-        self.json_reversed = []
         self.format_dict = dict.fromkeys(['timestamp', 'longitude',
                                 'latitude', 'vehicle_speed'])
-
+        self.json_list('GPS.json')
         if modification == 'slow':
-            self.json_list('GPS.json')
             self.modify_json()
         elif modification == 'reversed':
-            self.json_data = self.create_opposite('GPS.json')
+            self.set_data('false')
 
         else:
-            self.json_list('GPS.json')
+            self.set_data()
 
-        self.set_data()
 
     def modify_json(self):
         '''Modifies a json file to be filled with garble every 5 lines.'''
@@ -60,7 +57,7 @@ class Car:
                             self.json_data.append(j_content)
 
 
-    def set_dict(self, format_dict_insert):
+    def set_dict(self, format_dict_insert, normal='true'):
         '''Convert and merge received data to a dictionary.
 
         Keyword arguments:
@@ -73,11 +70,11 @@ class Car:
         elif format_dict_insert['name'] == 'latitude':
             self.format_dict['latitude'] = str(format_dict_insert['value'])
         elif format_dict_insert['name'] == 'vehicle_speed':
-            self.format_dict['vehicle_speed'] = str(format_dict_insert['value'])
+            self.format_dict['vehicle_speed'] = format_dict_insert['value']
         if self.format_dict["longitude"] is not None and \
                 self.format_dict["latitude"] is not None and \
                 self.format_dict["timestamp"] is not None:
-                    self.add_to_queue()
+                    self.add_to_queue(normal)
                     self.format_dict = dict.fromkeys(['timestamp',
                                                     'longitude', 'latitude'])
 
@@ -85,19 +82,25 @@ class Car:
         '''Reverses a json-file and returns it'''
 
         self.json_list(file_path)
+        json_reversed = []
+        print(self.json_data)
         for i in reversed(self.json_data):
-            self.json_reversed.append(i)
+            json_reversed.append(i)
 
-        return self.json_reversed
+        return json_reversed
 
-    def add_to_queue(self):
-        self.position_history.appendleft(self.format_dict)
+    def add_to_queue(self, normal='true'):
+        if normal == 'true':
+            self.position_history.appendleft(self.format_dict)
+        else:
+            self.position_history.append(self.format_dict)
 
-    def set_data(self):
+    def set_data(self, normal='true'):
         '''Adds entire trip to local variable position_history'''
 
         for i in self.json_data:
-            self.set_dict(i)
+            self.set_dict(i,normal)
+
 
     def get_data(self):
         '''Returns the two last datasets from position_history'''
@@ -109,10 +112,15 @@ class Car:
             return [new_car, old_car]
 
 if __name__ == "__main__":
-    reversed = Car('reversed')
+    r = Car('reversed')
+    print(r.position_history)
+    print("hei")
     normal = Car()
-    print(normal.position_history[len(normal.position_history)-1])
-    print(reversed.position_history[0])
+    print(normal.position_history)
+
+    print("hei")
+    print(normal.position_history[len(normal.position_history)- 1])
+    print(r.position_history[0])
 
     time.sleep(0.30)
 
