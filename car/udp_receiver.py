@@ -1,7 +1,7 @@
 import socket
 
 host = ''  # Symbolic name meaning all available interfaces.
-ip = '10.24.7.120'
+ip = '78.91.4.127'
 port = 10000
 
 # Create a UDP socket
