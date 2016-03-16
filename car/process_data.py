@@ -58,7 +58,7 @@ class ProcessData:
         time_to_intersection = Calculator.time_to_intersection(
                 distance_km, new_ambu_speed, new_car_speed)
         print ('The vehicles are: ' + str(distance_km) +
-                ' kms Appart. Time to intersect: ' + str(time_to_intersection))
+                ' kms apart. Time to intersect: ' + str(time_to_intersection))
 
         if time_to_intersection == 0:
             return False

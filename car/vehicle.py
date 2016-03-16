@@ -105,6 +105,9 @@ class Vehicle:
 if __name__ == "__main__":
     r = Vehicle('reversed')
     print(r.get_data())
+    n = Vehicle()
+    print(n.position_history[0])
+    print(r.position_history[len(r.position_history)-1])
 
     time.sleep(0.30)
 
