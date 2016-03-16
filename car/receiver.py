@@ -1,29 +1,21 @@
 import socket
 from collections import deque
 
-
-
 class Receiver:
 
+    def __init__():
+        self.host = ''  # Symbolic name meaning all available interfaces.
+        self.ip = '78.91.4.127'
+        self.port = 10000
+
+        # Create a UDP socket
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        # Bind socket to local host and port
+        self.sock.bind((host, port))
+
+
     current_dict = None
-
-    def __init__(self):
-        self.establish_connection()
-
-
-    def establish_connection(self):
-        """Set up a new socket connection."""
-
-        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        host = 'localhost'
-        port = 6000
-        self.server_socket.bind((host, port))
-        self.server_socket.listen(1)
-        self.client_socket, self.address = self.server_socket.accept()
-        self.position_history = deque()
-        self.temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude', 'vehicle_speed'])
-
-
 
     def add_to_queue(self, dict_insert):
         """Add received element to the receiver queue.
@@ -31,7 +23,6 @@ class Receiver:
         Keyword arguments:
         dict_insert -- dict containing GPS data and timestamp
         """
-
 
         if self.position_history.count() >= 2:
             self.position_history.pop()
@@ -59,17 +50,13 @@ class Receiver:
     def receive(self):
         """Receive data and convert bytes to string."""
 
-        while True:  # For continuous listening
-            try:
-                self.current_dict = eval(self.client_socket.recv(1024))  # Sets current_dict to the received elements from sender
-                self.add_to_queue(self.current_dict)  # Adds current_dict to the queue
-                copy = []
-                for elem in self.position_history:
-                    copy.append(elem)
-                print(copy)
-            except:
-                self.server_socket.close()
+        # Listen until terminated by user
+        while True:
+            data, addr = self.sock.recvfrom(1024)
+            self.current_dict = data.decode(encoding='UTF-8')
+            if not data:
                 break
+            print(data)
 
 if __name__ == "__main__":
     car = Receiver()
