@@ -59,6 +59,7 @@ class Car:
                             # Add content to json_data
                             self.json_data.append(j_content)
 
+
     def set_dict(self, format_dict_insert):
         '''Convert and merge received data to a dictionary.
 
@@ -110,9 +111,8 @@ class Car:
 if __name__ == "__main__":
     reversed = Car('reversed')
     normal = Car()
-    print(len(normal.position_history))
     print(normal.position_history[len(normal.position_history)-1])
-    print(reversed.position_history[len(reversed.position_history[0])])
+    print(reversed.position_history[0])
 
     time.sleep(0.30)
 
