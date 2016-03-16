@@ -4,18 +4,20 @@ import json
 
 class Sender:
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # List of IP addresses to iterate through
+    cars = []
+
+    # Add hardcoded IP addresses
+    cars.append('localhost')
+    cars.append('10.24.7.121')
+
+    # Add starting port
+    port = 10000
+
+    # Create a UDP socket
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
     json_data = []
-
-    def establish_connection(self, ip_address):
-        '''Creates socket to host
-
-        Keyword arguments:
-        ip_address -- String containing the ip-address of the receiver
-        '''
-        host = ip_address  # Receiver's IP-address, must change as needed
-        port = 6000
-        self.sock.connect((host, port))
 
     def json_list(self, file_path):
         '''Opens file and fills json_data with json
@@ -34,17 +36,25 @@ class Sender:
                             # Add content to json_data
                             self.json_data.append(j_content)
 
-    def send(self, ip_address):
-        '''Sends json data through socket
+    def send(self):
+        '''Sends json data through socket'''
 
-        Keyword arguments:
-        ip_address -- String containing the ip-address of the receiver
-        '''
-        self.establish_connection(ip_address)
+        for message in self.json_data:
+            # Send message to all the cars on the hardcoded list
+            for car in cars:
 
-        for i in self.json_data:
-            # Encodes string to UTF-8 and sends through socket
-            self.sock.send(str(i).encode())
+                # Print for easier debug
+                print(car)
+
+                try:
+                    # Send a test message
+                    # First convert message to bytes
+                    self.sock.sendto(message.encode(encoding='UTF-8'), (car, port))
+
+                except socket.error as e:
+                    print('Error code: ' + str(e[0]) + ' Message ' + str(e[1]))
+                    sys.exit()
+
             # Waits for 0.25 seconds before sending the next line
             time.sleep(0.25)
 
