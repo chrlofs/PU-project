@@ -4,7 +4,9 @@ from collections import deque
 class Receiver:
 
     def __init__():
-        self.host = ''  # Symbolic name meaning all available interfaces.
+        # Symbolic name meaning all available interfaces
+        self.host = ''
+        # IP address for the ambulance
         self.ip = '78.91.4.127'
         self.port = 10000
 
@@ -14,26 +16,28 @@ class Receiver:
         # Bind socket to local host and port
         self.sock.bind((host, port))
 
+        # Queue with the two last data objects received
+        self.position_history = deque()
 
-    current_dict = None
+        self.current_data = None
 
     def add_to_queue(self, dict_insert):
-        """Add received element to the receiver queue.
+        '''Add received element to the receiver queue.
 
         Keyword arguments:
         dict_insert -- dict containing GPS data and timestamp
-        """
+        '''
 
         if self.position_history.count() >= 2:
             self.position_history.pop()
         self.position_history.appendleft(dict_insert)
 
     def set_dict(self, temp_dict_insert):
-        """Convert and merge received data to a dictionary.
+        '''Convert and merge received data to a dictionary.
 
         Keyword arguments:
         temp_dict_insert -- dict containing longitude, latitude or timestamp
-        """
+        '''
 
         if temp_dict_insert['name'] == 'longitude':
             self.temp_dict['longitude'] = str(temp_dict_insert['value'])
@@ -48,17 +52,17 @@ class Receiver:
                     self.temp_dict = dict.fromkeys(['timestamp', 'longitude', 'latitude'])
 
     def receive(self):
-        """Receive data and convert bytes to string."""
+        '''Receive data and convert bytes to string.'''
 
         # Listen until terminated by user
         while True:
             data, addr = self.sock.recvfrom(1024)
-            self.current_dict = data.decode(encoding='UTF-8')
+            self.current_data = data.decode(encoding='UTF-8')
             if not data:
                 break
             print(data)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     car = Receiver()
     car.receive()
     print(car.position_history)
