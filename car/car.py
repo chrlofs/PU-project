@@ -4,20 +4,23 @@ from collections import deque
 
 class Car:
 
-    json_data = []
-    json_reversed = []
-    position_history = deque()
-    format_dict = dict.fromkeys(['timestamp', 'longitude',
+    def __init__(self, modification='normal'):
+        self.json_data = []
+        self.position_history = deque()
+        self.json_reversed = []
+        self.format_dict = dict.fromkeys(['timestamp', 'longitude',
                                 'latitude', 'vehicle_speed'])
 
-    def __init__(self, modification='normal'):
         if modification == 'slow':
             self.json_list('GPS.json')
             self.modify_json()
         elif modification == 'reversed':
-            self.create_opposite('GPS.json')
+            self.json_data = self.create_opposite('GPS.json')
+
         else:
             self.json_list('GPS.json')
+
+        self.set_data()
 
     def modify_json(self):
         '''Modifies a json file to be filled with garble every 5 lines.'''
@@ -45,6 +48,7 @@ class Car:
         Keyword arguments:
         file_path -- file containing json objects
         '''
+
         with open(file_path) as f:
             for line in f:  # Loops through lines in file
                 j_content = json.loads(line)  # Deserialize json string
@@ -82,6 +86,7 @@ class Car:
         self.json_list(file_path)
         for i in reversed(self.json_data):
             self.json_reversed.append(i)
+
         return self.json_reversed
 
     def add_to_queue(self):
@@ -93,8 +98,6 @@ class Car:
         for i in self.json_data:
             self.set_dict(i)
 
-        print(self.position_history)
-
     def get_data(self):
         '''Returns the two last datasets from position_history'''
 
@@ -105,11 +108,11 @@ class Car:
             return [new_car, old_car]
 
 if __name__ == "__main__":
-    car = Car('reversed')
-    # print(car.create_opposite('GPS.json'))
-    car.set_data()
-    print('Resultat')
-    print(car.get_data())
-    print(car.get_data())
-    print(car.get_data())
+    reversed = Car('reversed')
+    normal = Car()
+    print(len(normal.position_history))
+    print(normal.position_history[len(normal.position_history)-1])
+    print(reversed.position_history[len(reversed.position_history[0])])
+
     time.sleep(0.30)
+
