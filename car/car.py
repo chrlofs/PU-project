@@ -93,9 +93,9 @@ class Car:
         '''Returns the two last datasets from position_history'''
 
         if len(self.position_history) > 1:
-            old_car = self.position_history.pop()
-            new_car = self.position_history.pop()
-            self.position_history.append(new_car)
+            new_car = self.position_history.popleft()
+            old_car = self.position_history.popleft()
+            self.position_history.appendleft(old_car)
             return [new_car, old_car]
 
 if __name__ == "__main__":
