@@ -10,8 +10,14 @@ class Car:
     format_dict = dict.fromkeys(['timestamp', 'longitude',
                                 'latitude', 'vehicle_speed'])
 
-    def __init__(self):
-        self.json_list('GPS.json')
+    def __init__(self, modification='normal'):
+        if modification == 'slow':
+            self.json_list('GPS.json')
+            self.modify_json()
+        elif modification == 'reversed':
+            self.create_opposite('GPS.json')
+        else:
+            self.json_list('GPS.json')
 
     def modify_json(self):
         '''Modifies a json file to be filled with garble every 5 lines.'''
@@ -99,7 +105,7 @@ class Car:
             return [new_car, old_car]
 
 if __name__ == "__main__":
-    car = Car()
+    car = Car('reversed')
     # print(car.create_opposite('GPS.json'))
     car.set_data()
     print('Resultat')
