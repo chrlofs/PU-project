@@ -5,12 +5,12 @@ from collections import deque
 class Vehicle:
     '''modification choose if you wan't to drive normal, reversed or slow'''
 
-    def __init__(self, modification='normal'):
+    def __init__(self, modification='normal', start_ahead=False, speed=1):
         self.json_data = []
         self.position_history = deque()
         self.format_dict = dict.fromkeys(['timestamp', 'longitude',
                                 'latitude', 'vehicle_speed'])
-        self.json_list('./car/GPS.json')
+        self.json_list('./car/GPS.json', start_ahead, speed)
         if modification == 'slow':
             self.modify_json()
         elif modification == 'reversed':
@@ -39,7 +39,7 @@ class Vehicle:
                         outfile.write('\n')
                         counter += 1
 
-    def json_list(self, file_path):
+    def json_list(self, file_path, start_ahead=False, speed=1):
         '''Opens file and fills json_data with json
         objects corresponding to our filter
 
@@ -48,14 +48,24 @@ class Vehicle:
         '''
 
         with open(file_path) as f:
-            for line in f:  # Loops through lines in file
+            for i, line in enumerate(f):  # Loops through lines in file
                 j_content = json.loads(line)  # Deserialize json string
                 # Filters relevant content
-                if j_content.get('name') == 'longitude'\
-                    or j_content.get('name') == 'latitude'\
-                    or j_content.get('name') == 'vehicle_speed':
-                            # Add content to json_data
-                            self.json_data.append(j_content)
+                if start_ahead:
+                    if i > len(f)/2:
+                        if i % speed == 0:
+                            if j_content.get('name') == 'longitude'\
+                                or j_content.get('name') == 'latitude'\
+                                or j_content.get('name') == 'vehicle_speed':
+                                        # Add content to json_data
+                                        self.json_data.append(j_content)
+                else:
+                    if i % speed == 0:
+                        if j_content.get('name') == 'longitude'\
+                            or j_content.get('name') == 'latitude'\
+                            or j_content.get('name') == 'vehicle_speed':
+                                    # Add content to json_data
+                                    self.json_data.append(j_content)
 
 
     def set_dict(self, format_dict_insert, normal='true'):
