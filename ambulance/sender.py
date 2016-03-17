@@ -4,21 +4,22 @@ import json
 
 class Sender:
 
-    # List of IP addresses to iterate through
-    self.cars = []
+    def __init__(self):
+        # List of IP addresses to iterate through
+        self.cars = []
 
-    # Add hardcoded IP addresses
-    self.cars.append('localhost')
-    self.cars.append('10.24.7.121')
+        # Add hardcoded IP addresses
+        self.cars.append('localhost')
+        self.cars.append('10.24.7.121')
 
-    # Add starting port
-    port = 10000
+        # Add starting port
+        self.port = 10000
 
-    # Create a UDP socket
-    self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # Create a UDP socket
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    # JSON objects containing longitude, latitude and speed data
-    self.json_data = []
+        # JSON objects containing longitude, latitude and speed data
+        self.json_data = []
 
     def json_list(self, file_path):
         '''Open file and fill json_data with JSON
@@ -48,7 +49,8 @@ class Sender:
                 try:
                     # Send a test message
                     # First convert message to bytes
-                    self.sock.sendto(message.encode(encoding='UTF-8'), (car, port))
+                    # self.sock.send(str(i).encode())
+                    self.sock.sendto(str(message).encode(encoding='UTF-8'), (car, self.port))
                 except socket.error as e:
                     print('Error code: ' + str(e[0]) + ' Message ' + str(e[1]))
                     sys.exit()
