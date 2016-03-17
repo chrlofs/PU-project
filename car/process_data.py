@@ -66,7 +66,7 @@ class ProcessData:
         if time_to_intersection > 2:
             print('Ambulance is too far behind: ' + str(time_to_intersection))
             return False
-
+        print("It was relevant! :)")
         return True
 
     def _find_direction(self, data1, data2):

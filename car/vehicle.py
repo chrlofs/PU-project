@@ -46,13 +46,18 @@ class Vehicle:
         Keyword arguments:
         file_path -- file containing json objects
         '''
+        with open(file_path) as f:
+            for i, line in enumerate(f):
+                pass
+            file_length = i+1
 
         with open(file_path) as f:
             for i, line in enumerate(f):  # Loops through lines in file
                 j_content = json.loads(line)  # Deserialize json string
                 # Filters relevant content
                 if start_ahead:
-                    if i > len(f)/2:
+                    #print('inside start aehad')
+                    if i > (file_length/2):
                         if i % speed == 0:
                             if j_content.get('name') == 'longitude'\
                                 or j_content.get('name') == 'latitude'\
