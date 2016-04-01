@@ -34,15 +34,18 @@ class Receiver:
 
     def receive(self):
         '''Receive data and convert bytes to string.'''
-
+        try:
         # Listen until terminated by user
-        while True:
-            data, addr = self.sock.recvfrom(1024)
-            data = data.decode(encoding='UTF-8')
-            print(data)
-            if not data:
-                break
-            print(data)
+            while True:
+                data, addr = self.sock.recvfrom(1024)
+                data = data.decode(encoding='UTF-8')
+                print(data)
+                if not data:
+                    break
+                print(data)
+        except(KeyboardInterrupt):
+            print("Closing socket")
+            self.sock.close()
 
 if __name__ == '__main__':
     car = Receiver()
