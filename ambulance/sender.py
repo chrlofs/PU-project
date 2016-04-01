@@ -10,8 +10,7 @@ class Sender:
 
         # Add hardcoded IP addresses
         self.cars.append('localhost')
-        self.cars.append('10.24.7.121')
-        self.cars.append('78.91.4.127')
+
 
         # Add starting port
         self.port = 10000
