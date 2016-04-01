@@ -13,6 +13,7 @@ class TestSenderReceiverMethods(unittest.TestCase):
         self.sender.json_list('ambulance/testdata/commute_test.json')
         self.assertTrue(all(p['name'] == "longitude" or p['name'] == "latitude"\
             or p['name'] == "vehicle_speed") for p in self.sender.json_data)
+        self.sender.sock.close()
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestSenderReceiverMethods)
 unittest.TextTestRunner(verbosity=2).run(suite)

@@ -1,26 +1,14 @@
-from .receiver import Receiver
+from .vehicle import Vehicle
 from .direction import Direction
 from math import fabs
 from .support.calculator import Calculator
 
 class ProcessData:
 
-    def __init__(self, receiver):
-        self.receiver = receiver
+    def __init__(self, vehicle1, vehicle2):
+        self.vehicle1 = vehicle1
+        self.vehicle2 = vehicle2
 
-    def get_ambulance_data(self):
-        '''Return the two last data sets from Receiver
-
-        Returns:
-        Array containing data from the ambulance
-        old_ambu -- dict containing GPS data, timestamp, speed
-        new_ambu -- dict containing GPS data, timestamp, speed
-        '''
-
-        new_ambu = self.receiver.position_history.pop()
-        old_ambu = self.receiver.position_history.pop()
-        self.receiver.position_history.appendleft(old_ambu)
-        return [new_ambu, old_ambu]
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
         '''Takes in four dictionaries containing latitude, longditude and
@@ -35,20 +23,20 @@ class ProcessData:
         '''
 
         new_car_pos = (new_car['latitude'], new_car['longitude'])
-        new_car_speed = new_car['speed']
-        new_car_time = new_car['time']
+        new_car_speed = new_car['vehicle_speed']
+        new_car_time = new_car['timestamp']
 
         old_car_pos = (old_car['latitude'], old_car['longitude'])
-        old_car_speed = old_car['speed']
-        old_car_time = old_car['time']
+        old_car_speed = old_car['vehicle_speed']
+        old_car_time = old_car['timestamp']
 
         new_ambu_pos = (new_ambu['latitude'], new_ambu['longitude'])
-        new_ambu_speed = new_ambu['speed']
-        new_ambu_time = new_ambu['time']
+        new_ambu_speed = new_ambu['vehicle_speed']
+        new_ambu_time = new_ambu['timestamp']
 
         old_ambu_pos = (old_ambu['latitude'], old_ambu['longitude'])
-        old_ambu_speed = old_ambu['speed']
-        old_ambu_time = old_ambu['time']
+        old_ambu_speed = old_ambu['vehicle_speed']
+        old_ambu_time = old_ambu['timestamp']
 
         car_dir = self._find_direction(new_car_pos, old_car_pos)
         ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
@@ -64,13 +52,13 @@ class ProcessData:
             print ('Ambulance not behind car')
             return False
 
-        distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0],
-               new_ambu_pos[1], new_ambu_pos[0])
+        distance_km = Calculator.gps_to_kmeters(float(new_car_pos[1]), float(new_car_pos[0]),
+               float(new_ambu_pos[1]), float(new_ambu_pos[0]))
 
         time_to_intersection = Calculator.time_to_intersection(
                 distance_km, new_ambu_speed, new_car_speed)
         print ('The vehicles are: ' + str(distance_km) +
-                ' kms Appart. Time to intersect: ' + str(time_to_intersection))
+                ' kms apart. Time to intersect: ' + str(time_to_intersection))
 
         if time_to_intersection == 0:
             return False
@@ -78,7 +66,7 @@ class ProcessData:
         if time_to_intersection > 2:
             print('Ambulance is too far behind: ' + str(time_to_intersection))
             return False
-
+        print("It was relevant! :)")
         return True
 
     def _find_direction(self, data1, data2):
@@ -89,8 +77,8 @@ class ProcessData:
         data2 -- tuple with latitude and longitude from oldest data
         '''
 
-        lat_change = data2[0] - data1[0]
-        long_change = data2[1] - data1[1]
+        lat_change = float(data2[0]) - float(data1[0])
+        long_change = float(data2[1]) - float(data1[1])
 
         if lat_change == 0 and long_change == 0:
             return Direction.standing_still
