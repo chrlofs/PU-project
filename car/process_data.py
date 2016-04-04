@@ -59,17 +59,19 @@ class ProcessData:
         distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0],
                new_ambu_pos[1], new_ambu_pos[0])
 
-        if not _is_relevant(new_car_pos, car_speed, old_car_pos, 
+        print("Distance is : " + str(distance_km  ))
+
+        if not self._is_relevant(new_car_pos, car_speed, old_car_pos, 
             new_ambu_pos, ambu_speed, old_ambu_pos):
 
             #0.05km is 50 meters.
-            if distance_km > -0.05 and distance_km < 0 \
+            if distance_km < 0.05\
                     and car_dir.name == ambu_dir.name:
                 return 3
             return 0
 
         time_to_intersection = Calculator.time_to_intersection(
-                distance_km, new_ambu_speed, new_car_speed)
+                distance_km, ambu_speed, car_speed)
         print ('The vehicles are: ' + str(distance_km) +
                 ' kms Appart. Time to intersect: ' + str(time_to_intersection))
 
@@ -79,7 +81,7 @@ class ProcessData:
         if time_to_intersection <= 2:
             return 2
 
-    def _is_relevant(new_car_pos, car_speed, old_car_pos, 
+    def _is_relevant(self, new_car_pos, car_speed, old_car_pos, 
             new_ambu_pos, ambu_speed, old_ambu_pos):
         '''Takes in the car and the ambulances current and previous postition. 
         Returns whether the car should be notified or not, as a boolean
@@ -100,7 +102,7 @@ class ProcessData:
         car_dir = self._find_direction(new_car_pos, old_car_pos)
         ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
 
-        if new_ambu_speed <= 0:
+        if ambu_speed <= 0:
             return False
 
         if car_dir != ambu_dir:
@@ -115,7 +117,7 @@ class ProcessData:
                new_ambu_pos[1], new_ambu_pos[0])
 
         time_to_intersection = Calculator.time_to_intersection(
-                distance_km, new_ambu_speed, new_car_speed)
+                distance_km, ambu_speed, car_speed)
         print ('The vehicles are: ' + str(distance_km) +
                 ' kms Appart. Time to intersect: ' + str(time_to_intersection))
 
