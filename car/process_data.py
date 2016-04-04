@@ -5,10 +5,12 @@ from .support.calculator import Calculator
 
 class ProcessData:
 
-    def __init__(self, vehicle1, vehicle2):
-        self.vehicle1 = vehicle1
-        self.vehicle2 = vehicle2
+    def notify(self, position_history):
+        self.position_history = position_history
+        self.is_relevant(position_history.popleft(), position_history.pop()))
 
+    def find_own_pos(self, timestamp):
+        
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
         '''Takes in four dictionaries containing latitude, longditude and
