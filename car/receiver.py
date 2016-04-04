@@ -1,5 +1,6 @@
 import socket
 from collections import deque
+from process_data import ProcessData
 
 class Receiver:
 
@@ -19,6 +20,8 @@ class Receiver:
         # Queue with the two last data objects received
         self.position_history = deque()
 
+        self.process_data = ProcessData()
+
         self.current_data = None
 
     def add_to_queue(self, dict_insert):
@@ -35,7 +38,7 @@ class Receiver:
 
     def notify_process_data(self):
         '''Notify when car receives message from ambulance'''
-        
+
         self.process_data.notify(position_history)
 
     def receive(self):
