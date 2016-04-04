@@ -42,7 +42,7 @@ class ProcessData:
         0 if the situation is not relevant
         1 if the ambulance is less than 20 sec behind
         2 if the ambulance is less than 2 minutes behind
-        3 if the amulance just passed the car and is less than 50 meters ahead
+        3 if the ambulance just passed the car and is less than 50 meters ahead
         '''
 
         new_car_pos = (new_car['latitude'], new_car['longitude'])
