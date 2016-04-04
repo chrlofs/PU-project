@@ -31,6 +31,12 @@ class Receiver:
         if self.position_history.count() >= 2:
             self.position_history.pop()
         self.position_history.appendleft(dict_insert)
+        self.notify_process_data()
+
+    def notify_process_data(self):
+        '''Notify when car receives message from ambulance'''
+        
+        self.process_data.notify(position_history)
 
     def receive(self):
         '''Receive data and convert bytes to string.'''
