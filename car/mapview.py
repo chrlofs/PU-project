@@ -1,0 +1,2 @@
+import mplleaflet
+mplleaflet.show()
