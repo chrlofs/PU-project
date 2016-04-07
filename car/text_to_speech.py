@@ -1,5 +1,4 @@
 import os
-import time
 
 class TextToSpeech():
 
@@ -10,3 +9,5 @@ class TextToSpeech():
         path = os.path.dirname(os.path.realpath(__file__))
         os.system('mpg123 play ' + path + self.path + str(message_integer) + '.mp3')
 
+t = TextToSpeech()
+t.play(3)

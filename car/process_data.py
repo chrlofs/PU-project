@@ -7,12 +7,9 @@ class ProcessData:
 
     def __init__(self, receiver):
         self.receiver = receiver
-        self.messages = ['',
-                'There is an ambulance less than 20 seconds behind you. \
-                        Please pull over to the side.',
-                'There is an ambulance approaching you in approximately 2 \
-                        minutes. Please be ready to pull over to the side.',
-                'Thank you. Please remember do drive safely.']
+        self.minute_warning = False
+        self.second_warning = False
+        self.meter_message = False
 
     def get_ambulance_data(self):
         '''Return the two last data sets from Receiver
@@ -67,7 +64,13 @@ class ProcessData:
             #0.05km is 50 meters.
             if distance_km < 0.05\
                     and car_dir.name == ambu_dir.name:
-                return 3
+                if not self.meter_message:
+                    self.meter_message = True
+                    self.minute_warning = False
+                    self.second_warning = False
+                    return 3
+                else:
+                    return 0
             return 0
 
         time_to_intersection = Calculator.time_to_intersection(
@@ -77,9 +80,17 @@ class ProcessData:
 
         #time to intersection is less than 20 sec, 1/3 of a minute
         if time_to_intersection <= (1/3):
-            return 1
+            if not self.second_warning:
+                self.second_warning = True
+                return 1
+            return 0
+
         if time_to_intersection <= 2:
-            return 2
+            if not self.minute_warning:
+                self.minute_warning = True
+                self.meter_message = False
+                return 2
+            return 0
 
     def _is_relevant(self, new_car_pos, car_speed, old_car_pos, 
             new_ambu_pos, ambu_speed, old_ambu_pos):

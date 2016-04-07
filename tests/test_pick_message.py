@@ -50,5 +50,24 @@ class TestPickMessage(unittest.TestCase):
          
         self.assertEqual(res, 3)
 
+    def test_double_message(self):
+        print('Testing double message')
+        pd = ProcessData(None)
+
+        res = pd.pick_message(
+                {'longitude' : 38.8888, 'latitude' : 38.8888, 'speed' : 80},
+                {'longitude' : 38.8888, 'latitude' : 38.8889, 'speed' : 80},
+                {'longitude' : 38.8888, 'latitude' : 38.8588, 'speed' : 200},
+                {'longitude' : 38.8888, 'latitude' : 38.8589, 'speed' : 200}
+            )
+        second_res = pd.pick_message(
+                {'longitude' : 38.8888, 'latitude' : 38.8888, 'speed' : 80},
+                {'longitude' : 38.8888, 'latitude' : 38.8889, 'speed' : 80},
+                {'longitude' : 38.8888, 'latitude' : 38.8588, 'speed' : 200},
+                {'longitude' : 38.8888, 'latitude' : 38.8589, 'speed' : 200}
+            )
+         
+        self.assertEqual(second_res, 0)
+
 if __name__ == '__main__':
     unittest.main()
