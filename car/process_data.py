@@ -43,13 +43,17 @@ class ProcessData:
         '''
 
         new_car_pos = (new_car['latitude'], new_car['longitude'])
-        car_speed = new_car['speed']
+        new_car_time = new_car['timestamp']
         old_car_pos = (old_car['latitude'], old_car['longitude'])
-
+        old_car_time = old_car['timestamp']
+        car_speed = Calculator.speed(new_car_pos[1], new_car_pos[0], old_car_pos[1], old_car_pos[0], (old_car_time - new_car_time))
+        print("Car speed: " + str(car_speed))
         new_ambu_pos = (new_ambu['latitude'], new_ambu['longitude'])
-        ambu_speed = new_ambu['speed']
+        new_ambu_time = new_car['timestamp']
         old_ambu_pos = (old_ambu['latitude'], old_ambu['longitude'])
-
+        old_ambu_time = old_car['timestamp']
+        ambu_speed = Calculator.speed(new_ambu_pos[1], new_ambu_pos[0], old_ambu_pos[1], old_ambu_pos[0], (old_ambu_time - new_ambu_time))
+        print("Ambu speed: " + str(ambu_speed))
         car_dir = self._find_direction(new_car_pos, old_car_pos)
         ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
 

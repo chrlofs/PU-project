@@ -32,6 +32,25 @@ class Calculator:
         return dist
 
     @staticmethod
+    def speed(long1, lat1, long2, lat2, time_seconds):
+        """Converts gps longitudes and latitudes and time beteen to 
+        determine speed
+
+        Keyword arguments:
+        long1 -- longitude for old
+        lat1 -- latitute for old
+        long2 -- longitude for new
+        lat2 -- latitude for new
+        time_seconds
+        """
+        distance = Calculator.gps_to_kmeters(long1, lat1, long2, lat2)
+        if time_seconds == 0:
+            return 0
+        speed = distance/(time_seconds/(60*60))
+
+        return speed
+
+    @staticmethod
     def time_to_intersection(distance, ambu_speed, car_speed):
         '''Calculates how much time is approximately left until the vehciles
         intersect. Returns the time in minutes.
