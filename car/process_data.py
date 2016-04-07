@@ -9,18 +9,26 @@ class ProcessData:
 
     def __init__(self):
         self.car = Vehicle()
-        print(self.find_own_pos("1362060585.899"))
+        print(self.find_own_pos("1362060585.899", "1362060062.933"))
 
-    def notify(self, position_history):
-        self.ambulance_position_history = position_history
+    def notify(self, ambulance_position_history):
+        first_amb_pos = ambulance_position_history[0]['timestamp']
+        second_amb_pos = ambulance_position_history[1]['timestamp']
+        self.find_own_pos(first_amb_pos, second_amb_pos)
         # Edge case when first message arrive
         # self.is_relevant(position_history.popleft(), position_history.pop()))
 
-    def find_own_pos(self, timestamp):
+    def find_own_pos(self, first_timestamp, second_timestamp):
         '''Use timestamp from ambulance data to get car data'''
+        first_car_pos = None
+        second_car_pos = None
         for position in self.car.position_history:
-            if position['timestamp'] == timestamp:
-                return position
+            if position['timestamp'] == first_timestamp:
+                first_car_pos = position
+            if position['timestamp'] == second_timestamp:
+                second_car_pos = position
+            if first_car_pos is not None and second_car_pos is not None:
+                return first_car_pos, second_car_pos
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
         '''Takes in four dictionaries containing latitude, longditude and
