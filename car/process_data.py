@@ -9,9 +9,10 @@ class ProcessData:
 
     def __init__(self):
         self.car = Vehicle()
-        print(self.find_own_pos("1362060585.899", "1362060062.933"))
+        print(self.find_own_pos("1362060585", "1362060062"))
 
     def notify(self, ambulance_position_history):
+        '''Called by receiver to notify the car about new ambulance position'''
         first_amb_pos = ambulance_position_history[0]['timestamp']
         second_amb_pos = ambulance_position_history[1]['timestamp']
         self.find_own_pos(first_amb_pos, second_amb_pos)
