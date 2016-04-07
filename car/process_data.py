@@ -1,23 +1,26 @@
-from .vehicle import Vehicle
-from .direction import Direction
+from vehicle import Vehicle
+from direction import Direction
 from math import fabs
-from .support.calculator import Calculator
+from support.calculator import Calculator
 from bisect import bisect_left
 from collections import deque
 
 class ProcessData:
 
+    def __init__(self):
+        self.car = Vehicle()
+        print(self.find_own_pos("1362060585.899"))
+
     def notify(self, position_history):
         self.ambulance_position_history = position_history
-        self.car_position_history = deque()  # Edge case when first message arrive
-        self.is_relevant(position_history.popleft(), position_history.pop()))
+        # Edge case when first message arrive
+        # self.is_relevant(position_history.popleft(), position_history.pop()))
 
     def find_own_pos(self, timestamp):
         '''Use timestamp from ambulance data to get car data'''
-
-        with open("commute.json") as f:
-            # Search commute.json for equal timestamp
-            # Find car pos and return it
+        for position in self.car.position_history:
+            if position['timestamp'] == timestamp:
+                return position
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
         '''Takes in four dictionaries containing latitude, longditude and
@@ -118,3 +121,6 @@ class ProcessData:
         if direction.name == 'west':
             return car_pos[1] < ambu_pos[1]
         return True
+
+if __name__ == "__main__":
+    pd = ProcessData()
