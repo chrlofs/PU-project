@@ -1,7 +1,9 @@
 import time
 import json
 import copy
+import itertools
 from collections import deque
+import collections
 
 class Vehicle:
     '''modification choose if you wan't to drive normal, reversed or slow'''
@@ -13,6 +15,7 @@ class Vehicle:
                                 'latitude', 'vehicle_speed'])
         self.json_list('./car/GPS.json')
         self.set_data()
+        self.format_position_history = deque()
 
 
 
@@ -72,19 +75,22 @@ class Vehicle:
         #len(self.position_history)
         temp_list = copy.deepcopy(self.position_history)
         if start_ahead:
-            for i in range(int(len(self.position_history)/3), len(self.position_history)):
-                self.position_history.popleft()
+            self.format_position_history = collections.deque(itertools.islice(self.position_history, int(len(self.position_history)/2), len(self.position_history)))
+            #print('her har jeg vært')
+            #print(len(self.format_position_history))
+        else:
+            self.format_position_history = collections.deque(itertools.islice(self.position_history,0, len(self.position_history)))
 
 
     def get_data(self, start_ahead=False, speed=1, reversed=False):
         '''Returns the two last datasets from position_history'''
         self.set_modification(start_ahead,speed,reversed)
-        print(len(self.position_history))
-        if len(self.position_history) > 1:
+
+        if len(self.format_position_history) > 1:
             count= 0
-            new_car = self.position_history.popleft()
-            old_car = self.position_history.popleft()
-            self.position_history.appendleft(old_car)
+            new_car = self.format_position_history.popleft()
+            old_car = self.format_position_history.popleft()
+            self.format_position_history.appendleft(old_car)
             return [new_car, old_car]
 
 if __name__ == "__main__":
@@ -92,6 +98,7 @@ if __name__ == "__main__":
     #print(r.get_data())
     print('#######################')
     n = Vehicle()
+    print(n.get_data(start_ahead=True))
 
 
 

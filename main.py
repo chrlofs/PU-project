@@ -23,12 +23,12 @@ class Main:
 
         while len(self.amb.position_history) >1 and len(self.car.position_history) > 1:
             old_ambu, new_ambu = self.amb.get_data()
-            #self.map.plot_coordinates(old_ambu['longitude'],old_ambu['latitude'],'rs')
+            self.map.plot_coordinates(old_ambu['longitude'],old_ambu['latitude'],'rs')
             old_car, new_car = self.car.get_data(start_ahead=True)
             self.map.plot_coordinates(old_car['longitude'], old_car['latitude'],'bs')
             #self.process_data.is_relevant(new_car, old_car, new_ambu, old_ambu)
-        self.map.show_map()
-
+            self.map.show_map()
+            break
             # if count == 10:
             #     print(count)
             #     count = 0
