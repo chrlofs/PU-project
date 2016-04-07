@@ -8,7 +8,7 @@ import collections
 class Vehicle:
     '''modification choose if you wan't to drive normal, reversed or slow'''
 
-    def __init__(self):
+    def __init__(self, start_ahead=False, speed=1, reversed=False):
         self.json_data = []
         self.position_history = deque()
         self.format_dict = dict.fromkeys(['timestamp', 'longitude',
@@ -16,6 +16,7 @@ class Vehicle:
         self.json_list('./car/GPS.json')
         self.set_data()
         self.format_position_history = deque()
+        self.set_modification(start_ahead,speed,reversed)
 
 
 
@@ -73,33 +74,39 @@ class Vehicle:
 
     def set_modification(self, start_ahead=False, speed=1, reversed=False):
         #len(self.position_history)
-        temp_list = copy.deepcopy(self.position_history)
+        if reversed:
+            self.position_history.reverse()
         if start_ahead:
             self.format_position_history = collections.deque(itertools.islice(self.position_history, int(len(self.position_history)/2), len(self.position_history)))
             #print('her har jeg vært')
             #print(len(self.format_position_history))
         else:
-            self.format_position_history = collections.deque(itertools.islice(self.position_history,0, len(self.position_history)))
+            self.format_position_history = collections.deque(itertools.islice(self.position_history,0, len(self.position_history),speed))
 
 
-    def get_data(self, start_ahead=False, speed=1, reversed=False):
+
+    def get_data(self):
         '''Returns the two last datasets from position_history'''
-        self.set_modification(start_ahead,speed,reversed)
-
         if len(self.format_position_history) > 1:
             count= 0
             new_car = self.format_position_history.popleft()
             old_car = self.format_position_history.popleft()
             self.format_position_history.appendleft(old_car)
+
+            print(len(self.format_position_history))
             return [new_car, old_car]
 
 if __name__ == "__main__":
-    r = Vehicle()
+    r = Vehicle(speed=3)
     #print(r.get_data())
     print('#######################')
     n = Vehicle()
-    print(n.get_data(start_ahead=True))
-
+    #print(n.get_data())
+    if r.get_data() != n.get_data():
+        print('riktig!!!!')
+    print(r.get_data())
+    print(r.get_data())
+    print(r.get_data())
 
 
 
