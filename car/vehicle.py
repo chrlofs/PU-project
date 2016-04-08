@@ -18,8 +18,6 @@ class Vehicle:
         self.format_position_history = deque()
         self.set_modification(start_ahead,speed,reversed)
 
-
-
     def json_list(self, file_path):
         '''Opens file and fills json_data with json
         objects corresponding to our filter
@@ -38,14 +36,12 @@ class Vehicle:
                             # Add content to json_data
                     self.json_data.append(j_content)
 
-
     def set_dict(self, format_dict_insert):
         '''Convert and merge received data to a dictionary.
 
         Keyword arguments:
         format_dict_insert -- dict containing longitude, latitude or timestamp
         '''
-
         if format_dict_insert['name'] == 'longitude':
             self.format_dict['longitude'] = str(format_dict_insert['value'])
             self.format_dict['timestamp'] = str(format_dict_insert['timestamp'])
@@ -61,7 +57,6 @@ class Vehicle:
                     self.format_dict = dict.fromkeys(['timestamp',
                                                     'longitude', 'latitude', 'vehicle_speed'])
 
-
     def set_data(self):
         '''Adds entire trip to local variable position_history
         & choose which way to drive the car'''
@@ -73,44 +68,36 @@ class Vehicle:
             self.position_history.append(self.format_dict)
 
     def set_modification(self, start_ahead=False, speed=1, reversed=False):
-        #len(self.position_history)
+        '''
+        :param start_ahead: only reads the second half in position_history
+        :param speed: only read every 3 line in position_history
+        :param reversed:
+        '''
         if reversed:
             self.position_history.reverse()
         if start_ahead:
-            self.format_position_history = collections.deque(itertools.islice(self.position_history, int(len(self.position_history)/2), len(self.position_history)))
-            #print('her har jeg vært')
-            #print(len(self.format_position_history))
+            self.format_position_history = collections.deque(itertools.islice(self.position_history,
+                                                                              int(len(self.position_history)/2),
+                                                                              len(self.position_history)))
         else:
-            self.format_position_history = collections.deque(itertools.islice(self.position_history,0, len(self.position_history),speed))
-
-
+            self.format_position_history = collections.deque(itertools.islice(self.position_history, 0,
+                                                                              len(self.position_history), speed))
 
     def get_data(self):
         '''Returns the two last datasets from position_history'''
         if len(self.format_position_history) > 1:
-            count= 0
             new_car = self.format_position_history.popleft()
             old_car = self.format_position_history.popleft()
             self.format_position_history.appendleft(old_car)
-
-            print(len(self.format_position_history))
             return [new_car, old_car]
 
 if __name__ == "__main__":
     r = Vehicle(speed=3)
-    #print(r.get_data())
     print('#######################')
     n = Vehicle()
-    #print(n.get_data())
     if r.get_data() != n.get_data():
         print('riktig!!!!')
     print(r.get_data())
     print(r.get_data())
     print(r.get_data())
-
-
-
-
     time.sleep(0.30)
-
-
