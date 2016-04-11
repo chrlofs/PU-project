@@ -9,7 +9,7 @@ class ProcessData:
 
     def __init__(self):
         self.car = Vehicle()
-        print(self.find_own_pos("1362060585", "1362060062"))
+        self.find_own_pos("1362060585", "1362060062")
 
     def notify(self, ambulance_position_history):
         '''Called by receiver to notify the car about new ambulance position'''
@@ -20,16 +20,18 @@ class ProcessData:
         # self.is_relevant(position_history.popleft(), position_history.pop()))
 
     def find_own_pos(self, first_timestamp, second_timestamp):
-        '''Use timestamp from ambulance data to get car data'''
+        '''Use timestamps from ambulance data to get car data'''
         first_car_pos = None
         second_car_pos = None
         for position in self.car.position_history:
-            if position['timestamp'] == first_timestamp:
+            if position['timestamp'][:10] == first_timestamp:
                 first_car_pos = position
-            if position['timestamp'] == second_timestamp:
+            if position['timestamp'][:10] == second_timestamp:
                 second_car_pos = position
-            if first_car_pos is not None and second_car_pos is not None:
-                return first_car_pos, second_car_pos
+        if first_car_pos is not None and second_car_pos is not None:
+            self.car.position_history.clear  # Clear old data points
+            self.car.position_history.append(first_car_pos)
+            self.car.position_history.append(second_car_pos)
 
     def is_relevant(self, new_car, old_car, new_ambu, old_ambu):
         '''Takes in four dictionaries containing latitude, longditude and
@@ -118,7 +120,7 @@ class ProcessData:
         car_pos -- tuple with latitude and longitude from newest data of car
         ambu_pos -- tuple with latitude and longitude from newest data of ambu
         direction -- Direction of the two vehicles. Must be the same after
-                        comparing in is_relevant
+                     comparing in is_relevant
         '''
 
         if direction.name == 'north':
