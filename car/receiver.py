@@ -30,16 +30,18 @@ class Receiver:
         Keyword arguments:
         dict_insert -- dict containing GPS data and timestamp
         '''
-
-        if self.position_history.count() >= 2:
+        print('add to queue')
+        print(dict_insert)
+        if len(self.position_history) >= 2:
             self.position_history.pop()
-        self.position_history.appendleft(dict_insert)
+        self.position_history.append(dict_insert)
+        print(self.position_history)
         self.notify_process_data()
 
     def notify_process_data(self):
         '''Notify when car receives message from ambulance'''
-
-        self.process_data.notify(position_history)
+        if len(self.position_history) == 2:
+            self.process_data.notify(self.position_history)
 
     def receive(self):
         '''Receive data and convert bytes to string.'''
@@ -48,7 +50,8 @@ class Receiver:
             while True:
                 data, addr = self.sock.recvfrom(1024)
                 data = data.decode(encoding='UTF-8')
-                print(data)
+                # print(data)
+                self.add_to_queue(data)
                 if not data:
                     break
         except(KeyboardInterrupt):

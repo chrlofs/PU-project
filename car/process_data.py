@@ -19,6 +19,8 @@ class ProcessData:
 
     def notify(self, ambulance_position_history):
         '''Called by receiver to notify the car about new ambulance position'''
+        print('process_data notified')
+        print(ambulance_position_history)
         first_amb_pos = ambulance_position_history[0]['timestamp']
         second_amb_pos = ambulance_position_history[1]['timestamp']
         self.find_own_pos(first_amb_pos, second_amb_pos)
