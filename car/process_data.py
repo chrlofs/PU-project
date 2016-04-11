@@ -9,7 +9,9 @@ class ProcessData:
 
     def __init__(self):
         self.car = Vehicle()
-        self.find_own_pos("1362060585", "1362060062")
+        # Verify that the Vehicle object was created
+        # print("Vehicle made!")
+        # self.find_own_pos("1362060585", "1362060062")
 
     def notify(self, ambulance_position_history):
         '''Called by receiver to notify the car about new ambulance position'''
@@ -19,7 +21,7 @@ class ProcessData:
         # TODO: Handle edge case when first message arrive
         #       self.car.position_history is then empty
         self.is_relevant(self.car.position_history.popleft(),
-                         self.car.position_history.pop())),
+                         self.car.position_history.pop(),
                          first_amb_pos,
                          second_amb_pos)
 
@@ -93,7 +95,7 @@ class ProcessData:
         if time_to_intersection > 2:
             print('Ambulance is too far behind: ' + str(time_to_intersection))
             return False
-        print("It was relevant! :)")
+
         return True
 
     def _find_direction(self, data1, data2):

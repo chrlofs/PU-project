@@ -51,7 +51,6 @@ class Receiver:
                 print(data)
                 if not data:
                     break
-                print(data)
         except(KeyboardInterrupt):
             print("Closing socket")
             self.sock.close()
