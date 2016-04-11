@@ -1,30 +1,18 @@
-from .receiver import Receiver
+from .vehicle import Vehicle
 from .direction import Direction
 from math import fabs
 from .support.calculator import Calculator
 
 class ProcessData:
 
-    def __init__(self, receiver):
-        self.receiver = receiver
+    def __init__(self, vehicle1, vehicle2):
+        self.vehicle1 = vehicle1
+        self.vehicle2 = vehicle2
         self.minute_warning = False
         self.second_warning = False
         self.meter_message = False
 
-    def get_ambulance_data(self):
-        '''Return the two last data sets from Receiver
-
-        Returns:
-        Array containing data from the ambulance
-        old_ambu -- dict containing GPS data, timestamp, speed
-        new_ambu -- dict containing GPS data, timestamp, speed
-        '''
-
-        new_ambu = self.receiver.position_history.pop()
-        old_ambu = self.receiver.position_history.pop()
-        self.receiver.position_history.appendleft(old_ambu)
-        return [new_ambu, old_ambu]
-
+        
     def pick_message(self, new_car, old_car, new_ambu, old_ambu):
         '''Checks if the current data is relevant, and returns a integer 
         for each case
@@ -128,13 +116,13 @@ class ProcessData:
             print ('Ambulance not behind car')
             return False
 
-        distance_km = Calculator.gps_to_kmeters(new_car_pos[1], new_car_pos[0],
-               new_ambu_pos[1], new_ambu_pos[0])
+        distance_km = Calculator.gps_to_kmeters(float(new_car_pos[1]), float(new_car_pos[0]),
+               float(new_ambu_pos[1]), float(new_ambu_pos[0]))
 
         time_to_intersection = Calculator.time_to_intersection(
                 distance_km, ambu_speed, car_speed)
         print ('The vehicles are: ' + str(distance_km) +
-                ' kms Appart. Time to intersect: ' + str(time_to_intersection))
+                ' kms apart. Time to intersect: ' + str(time_to_intersection))
 
         if time_to_intersection == 0:
             return False
@@ -142,7 +130,6 @@ class ProcessData:
         if time_to_intersection > 2:
             print('Ambulance is too far behind: ' + str(time_to_intersection))
             return False
-
         return True
 
     def _find_direction(self, data1, data2):
@@ -153,8 +140,8 @@ class ProcessData:
         data2 -- tuple with latitude and longitude from oldest data
         '''
 
-        lat_change = data2[0] - data1[0]
-        long_change = data2[1] - data1[1]
+        lat_change = float(data2[0]) - float(data1[0])
+        long_change = float(data2[1]) - float(data1[1])
 
         if lat_change == 0 and long_change == 0:
             return Direction.standing_still
