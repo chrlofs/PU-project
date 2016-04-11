@@ -16,8 +16,12 @@ class ProcessData:
         first_amb_pos = ambulance_position_history[0]['timestamp']
         second_amb_pos = ambulance_position_history[1]['timestamp']
         self.find_own_pos(first_amb_pos, second_amb_pos)
-        # Edge case when first message arrive
-        # self.is_relevant(position_history.popleft(), position_history.pop()))
+        # TODO: Handle edge case when first message arrive
+        #       self.car.position_history is then empty
+        self.is_relevant(self.car.position_history.popleft(),
+                         self.car.position_history.pop())),
+                         first_amb_pos,
+                         second_amb_pos)
 
     def find_own_pos(self, first_timestamp, second_timestamp):
         '''Use timestamps from ambulance data to get car data'''
