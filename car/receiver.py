@@ -1,6 +1,7 @@
 import socket
+import json
 from collections import deque
-from process_data import ProcessData
+from car.process_data import ProcessData
 
 class Receiver:
 
@@ -20,28 +21,55 @@ class Receiver:
         # Queue with the two last data objects received
         self.position_history = deque()
 
+        self.current_data = None
+        self.format_dict = dict.fromkeys(['timestamp', 'longitude',
+                                'latitude'])
         self.process_data = ProcessData()
 
-        self.current_data = None
+    def set_dict(self, format_dict_insert):
+        '''Convert and merge received data to a dictionary.
+
+        Keyword arguments:
+        format_dict_insert -- dict containing longitude, latitude or timestamp
+        '''
+        #print('test'+str(format_dict_insert))
+        print(format_dict_insert)
+        if format_dict_insert['name'] == 'longitude':
+
+            self.format_dict['longitude'] = format_dict_insert['value']
+            self.format_dict['timestamp'] = format_dict_insert['timestamp']
+        elif format_dict_insert['name'] == 'latitude':
+            self.format_dict['latitude'] = format_dict_insert['value']
+        elif format_dict_insert['name'] == 'vehicle_speed':
+            self.format_dict['vehicle_speed'] = format_dict_insert['value']
+        if self.format_dict["longitude"] is not None and \
+                self.format_dict["latitude"] is not None and \
+                self.format_dict["timestamp"] is not None:
+                    self.add_to_queue(self.format_dict)
+                    self.format_dict = dict.fromkeys(['timestamp',
+                                                'longitude', 'latitude', 'vehicle_speed'])
 
     def add_to_queue(self, dict_insert):
         '''Add received element to the receiver queue.
-
         Keyword arguments:
         dict_insert -- dict containing GPS data and timestamp
         '''
-        print('add to queue')
-        print(dict_insert)
-        if len(self.position_history) >= 2:
-            self.position_history.pop()
+
+       # if len(self.position_history) >= 2:
+        #    self.position_history.pop()
         self.position_history.append(dict_insert)
-        print(self.position_history)
-        self.notify_process_data()
 
     def notify_process_data(self):
-        '''Notify when car receives message from ambulance'''
-        if len(self.position_history) == 2:
-            self.process_data.notify(self.position_history)
+        if len(self.position_history) >1:
+            self.process_data.notify(self.get_data())
+
+    def get_data(self):
+        '''Returns the two last datasets from position_history'''
+        if len(self.position_history) > 1:
+            new_amb = self.position_history.popleft()
+            old_amb = self.position_history.popleft()
+            self.position_history.appendleft(old_amb)
+            return [new_amb, old_amb]
 
     def receive(self):
         '''Receive data and convert bytes to string.'''
@@ -50,13 +78,19 @@ class Receiver:
             while True:
                 data, addr = self.sock.recvfrom(1024)
                 data = data.decode(encoding='UTF-8')
-                # print(data)
-                self.add_to_queue(data)
+
+                aksepebel_string = data.replace("'","\"")
+                data = json.loads(aksepebel_string)
+
+                self.set_dict(data)
+                self.notify_process_data()
                 if not data:
                     break
+                #print(data)
         except(KeyboardInterrupt):
             print("Closing socket")
             self.sock.close()
+            #print(self.position_history)
 
 if __name__ == '__main__':
     car = Receiver()

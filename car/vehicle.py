@@ -13,7 +13,7 @@ class Vehicle:
         self.position_history = deque()
         self.format_dict = dict.fromkeys(['timestamp', 'longitude',
                                 'latitude', 'vehicle_speed'])
-        self.json_list('./car/GPS.json')
+        self.json_list('GPS.json')
         self.set_data()
         self.format_position_history = deque()
         self.set_modification(start_ahead,speed,reversed)

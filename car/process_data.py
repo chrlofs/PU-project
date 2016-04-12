@@ -1,35 +1,39 @@
-from vehicle import Vehicle
-from direction import Direction
+from car.vehicle import Vehicle
+from car.direction import Direction
 from math import fabs
-from support.calculator import Calculator
+from car.support.calculator import Calculator
 from bisect import bisect_left
 from collections import deque
+from car.mapview import MapView
 
 
 class ProcessData:
 
     def __init__(self):
-        self.car = Vehicle()
+        self.car = Vehicle(start_ahead=True)
         # Verify that the Vehicle object was created
         # print("Vehicle made!")
         # self.find_own_pos("1362060585", "1362060062")
         self.minute_warning = False
         self.second_warning = False
         self.meter_message = False
+        self.map = MapView()
 
     def notify(self, ambulance_position_history):
         '''Called by receiver to notify the car about new ambulance position'''
         print('process_data notified')
         print(ambulance_position_history)
-        first_amb_pos = ambulance_position_history[0]['timestamp']
-        second_amb_pos = ambulance_position_history[1]['timestamp']
-        self.find_own_pos(first_amb_pos, second_amb_pos)
+        new_car, old_car = self.car.get_data()
+        # first_amb_pos = ambulance_position_history[0]['timestamp']
+        # second_amb_pos = ambulance_position_history[1]['timestamp']
+        # self.find_own_pos(first_amb_pos, second_amb_pos)
         # TODO: Handle edge case when first message arrive
         #       self.car.position_history is then empty
-        self.is_relevant(self.car.position_history.popleft(),
-                         self.car.position_history.pop(),
-                         first_amb_pos,
-                         second_amb_pos)
+        #self.is_relevant(self.car.position_history.popleft(),self.car.position_history.pop(),first_amb_pos,second_amb_pos)
+        self.map.plot_coordinates(old_car['longitude'], old_car['latitude'], 'bs')
+        self.map.plot_coordinates(ambulance_position_history[1]['longitude'], ambulance_position_history[1]['latitude'], 'rs')
+        self.pick_message(new_car, old_car, ambulance_position_history[0], ambulance_position_history[1])
+        self.map.show_map()
 
     def find_own_pos(self, first_timestamp, second_timestamp):
         '''Use timestamps from ambulance data to get car data'''
@@ -41,7 +45,7 @@ class ProcessData:
             if position['timestamp'][:10] == second_timestamp:
                 second_car_pos = position
         if first_car_pos is not None and second_car_pos is not None:
-            self.car.position_history.clear  # Clear old data points
+            self.car.position_history.clear()  # Clear old data points
             self.car.position_history.append(first_car_pos)
             self.car.position_history.append(second_car_pos)
 
