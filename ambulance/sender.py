@@ -6,7 +6,7 @@ class Sender:
 
     def __init__(self):
         # List of IP addresses to iterate through
-        self.cars = []
+        self.cars = ['10.22.64.135']
 
         # Add hardcoded IP addresses
         self.cars.append('localhost')
@@ -31,12 +31,8 @@ class Sender:
         with open(file_path) as f:
             for line in f:  # Loops through lines in file
                 j_content = json.loads(line)  # Deserialize json string
-                # Filters relevant content
-                if j_content.get('name') == 'longitude'\
-                    or j_content.get('name') == 'latitude'\
-                    or j_content.get('name') == 'vehicle_speed':
-                            # Add content to json_data
-                            self.json_data.append(j_content)
+                # Add content to json_data
+                self.json_data.append(j_content)
 
     def send(self):
         '''Send JSON data to all nearby cars'''
@@ -59,6 +55,7 @@ class Sender:
 
 if __name__ == "__main__":
     amb = Sender()
-    amb.json_list('commute.json')
+    amb.json_list('2xspeed.json')
+    print(amb.json_data)
     amb.send()
     amb.sock.close()

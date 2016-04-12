@@ -10,7 +10,7 @@ from car.mapview import MapView
 class ProcessData:
 
     def __init__(self):
-        self.car = Vehicle(speed=3)
+        self.car = Vehicle()
         # Verify that the Vehicle object was created
         # print("Vehicle made!")
         # self.find_own_pos("1362060585", "1362060062")
@@ -22,15 +22,15 @@ class ProcessData:
     def notify(self, ambulance_position_history):
         '''Called by receiver to notify the car about new ambulance position'''
         print('process_data notified')
-        print(ambulance_position_history)
-        new_car, old_car = self.car.get_data()
-        # TODO: Handle edge case when first message arrive
+        if 2 < len(self.car.position_history):
+            new_car, old_car = self.car.get_data()
+            # TODO: Handle edge case when first message arrive
 
-        # Plot coordinates to map, updates everytime new data arrives. Run in Safari
-        self.map.plot_coordinates(old_car['longitude'], old_car['latitude'], 'bs')
-        self.map.plot_coordinates(ambulance_position_history[1]['longitude'], ambulance_position_history[1]['latitude'], 'rs')
-        self.pick_message(new_car, old_car, ambulance_position_history[0], ambulance_position_history[1])
-        self.map.show_map()
+            # Plot coordinates to map, updates everytime new data arrives. Run in Safari
+            self.map.plot_coordinates(old_car['longitude'], old_car['latitude'], 'bs')
+            self.map.plot_coordinates(ambulance_position_history[1]['longitude'], ambulance_position_history[1]['latitude'], 'rs')
+            self.pick_message(new_car, old_car, ambulance_position_history[0], ambulance_position_history[1])
+            self.map.show_map()
 
     def find_own_pos(self, first_timestamp, second_timestamp):
         '''Use timestamps from ambulance data to get car data'''

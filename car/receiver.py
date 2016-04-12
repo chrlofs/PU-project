@@ -26,26 +26,6 @@ class Receiver:
                                 'latitude'])
         self.process_data = ProcessData()
 
-    def set_dict(self, format_dict_insert):
-        '''Convert and merge received data to a dictionary.
-
-        Keyword arguments:
-        format_dict_insert -- dict containing longitude, latitude or timestamp
-        '''
-        if format_dict_insert['name'] == 'longitude':
-
-            self.format_dict['longitude'] = format_dict_insert['value']
-            self.format_dict['timestamp'] = format_dict_insert['timestamp']
-        elif format_dict_insert['name'] == 'latitude':
-            self.format_dict['latitude'] = format_dict_insert['value']
-        elif format_dict_insert['name'] == 'vehicle_speed':
-            self.format_dict['vehicle_speed'] = format_dict_insert['value']
-        if self.format_dict["longitude"] is not None and \
-                self.format_dict["latitude"] is not None and \
-                self.format_dict["timestamp"] is not None:
-                    self.add_to_queue(self.format_dict)
-                    self.format_dict = dict.fromkeys(['timestamp',
-                                                'longitude', 'latitude', 'vehicle_speed'])
 
     def add_to_queue(self, dict_insert):
         '''Add received element to the receiver queue.
@@ -72,12 +52,12 @@ class Receiver:
         try:
         # Listen until terminated by user
             while True:
-                data, addr = self.sock.recvfrom(1024)
-                data = data.decode(encoding='UTF-8')
+                rawdata, addr = self.sock.recvfrom(1024)
+                data = rawdata.decode(encoding='UTF-8')
                 # Convert data to dictionary
                 acceptable_string = data.replace("'","\"")
                 data = json.loads(acceptable_string)
-                self.set_dict(data)
+                self.add_to_queue(data)
                 self.notify_process_data()
                 if not data:
                     break
