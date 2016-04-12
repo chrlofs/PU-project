@@ -32,8 +32,6 @@ class Receiver:
         Keyword arguments:
         format_dict_insert -- dict containing longitude, latitude or timestamp
         '''
-        #print('test'+str(format_dict_insert))
-        print(format_dict_insert)
         if format_dict_insert['name'] == 'longitude':
 
             self.format_dict['longitude'] = format_dict_insert['value']
@@ -54,12 +52,10 @@ class Receiver:
         Keyword arguments:
         dict_insert -- dict containing GPS data and timestamp
         '''
-
-       # if len(self.position_history) >= 2:
-        #    self.position_history.pop()
         self.position_history.append(dict_insert)
 
     def notify_process_data(self):
+        '''Notifies process_data when receiving data from sender'''
         if len(self.position_history) >1:
             self.process_data.notify(self.get_data())
 
@@ -78,19 +74,16 @@ class Receiver:
             while True:
                 data, addr = self.sock.recvfrom(1024)
                 data = data.decode(encoding='UTF-8')
-
-                aksepebel_string = data.replace("'","\"")
-                data = json.loads(aksepebel_string)
-
+                # Convert data to dictionary
+                acceptable_string = data.replace("'","\"")
+                data = json.loads(acceptable_string)
                 self.set_dict(data)
                 self.notify_process_data()
                 if not data:
                     break
-                #print(data)
         except(KeyboardInterrupt):
             print("Closing socket")
             self.sock.close()
-            #print(self.position_history)
 
 if __name__ == '__main__':
     car = Receiver()

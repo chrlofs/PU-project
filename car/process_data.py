@@ -10,7 +10,7 @@ from car.mapview import MapView
 class ProcessData:
 
     def __init__(self):
-        self.car = Vehicle(start_ahead=True)
+        self.car = Vehicle(speed=3)
         # Verify that the Vehicle object was created
         # print("Vehicle made!")
         # self.find_own_pos("1362060585", "1362060062")
@@ -24,12 +24,9 @@ class ProcessData:
         print('process_data notified')
         print(ambulance_position_history)
         new_car, old_car = self.car.get_data()
-        # first_amb_pos = ambulance_position_history[0]['timestamp']
-        # second_amb_pos = ambulance_position_history[1]['timestamp']
-        # self.find_own_pos(first_amb_pos, second_amb_pos)
         # TODO: Handle edge case when first message arrive
-        #       self.car.position_history is then empty
-        #self.is_relevant(self.car.position_history.popleft(),self.car.position_history.pop(),first_amb_pos,second_amb_pos)
+
+        # Plot coordinates to map, updates everytime new data arrives. Run in Safari
         self.map.plot_coordinates(old_car['longitude'], old_car['latitude'], 'bs')
         self.map.plot_coordinates(ambulance_position_history[1]['longitude'], ambulance_position_history[1]['latitude'], 'rs')
         self.pick_message(new_car, old_car, ambulance_position_history[0], ambulance_position_history[1])
