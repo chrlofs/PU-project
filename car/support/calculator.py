@@ -25,7 +25,7 @@ class Calculator:
         dist_lat = lat2 - lat1
 
         a = sin(dist_lat / 2)**2 + cos(lat1) * cos(lat2) * sin(dist_long)**2
-        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        c = atan2(sqrt(a), sqrt(1 - a))
 
         dist = R * c
 

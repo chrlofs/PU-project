@@ -5,6 +5,7 @@ from car.support.calculator import Calculator
 from bisect import bisect_left
 from collections import deque
 from car.mapview import MapView
+from car.text_to_speech import TextToSpeech
 
 
 class ProcessData:
@@ -18,6 +19,7 @@ class ProcessData:
         self.second_warning = False
         self.meter_message = False
         self.map = MapView()
+        self.text_to_speech = TextToSpeech()
 
     def notify(self, ambulance_position_history):
         '''Called by receiver to notify the car about new ambulance position'''
@@ -31,7 +33,8 @@ class ProcessData:
                 # Plot coordinates to map, updates everytime new data arrives. Run in Safari
                 self.map.plot_coordinates(car_pos[1]['longitude'], car_pos[1]['latitude'], 'bs')
                 self.map.plot_coordinates(ambulance_position_history[1]['longitude'], ambulance_position_history[1]['latitude'], 'rs')
-                self.pick_message(car_pos[0], car_pos[1], ambulance_position_history[0], ambulance_position_history[1])
+                message = self.pick_message(car_pos[1], car_pos[0], ambulance_position_history[1], ambulance_position_history[0])
+                self.text_to_speech.play(message)
                 self.map.show_map()
 
     def find_own_pos(self, first_timestamp, second_timestamp):
@@ -75,6 +78,7 @@ class ProcessData:
         old_car_pos = (old_car['latitude'], old_car['longitude'])
         old_car_time = old_car['timestamp']
         car_speed = Calculator.speed(new_car_pos[1], new_car_pos[0], old_car_pos[1], old_car_pos[0], (new_car_time - old_car_time))
+        print("Car time" + str(new_car_time-old_car_time))
         print("Car speed: " + str(car_speed))
         new_ambu_pos = (new_ambu['latitude'], new_ambu['longitude'])
         new_ambu_time = new_car['timestamp']
@@ -142,8 +146,8 @@ class ProcessData:
                         latitude first, longitude second
         '''
 
-        car_dir = self._find_direction(new_car_pos, old_car_pos)
-        ambu_dir = self._find_direction(new_ambu_pos, old_ambu_pos)
+        car_dir = self._find_direction(old_car_pos, new_car_pos)
+        ambu_dir = self._find_direction(old_ambu_pos, new_ambu_pos)
 
         if ambu_speed <= 0:
             return False
