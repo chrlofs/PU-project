@@ -22,29 +22,36 @@ class ProcessData:
     def notify(self, ambulance_position_history):
         '''Called by receiver to notify the car about new ambulance position'''
         print('process_data notified')
-        if 2 < len(self.car.position_history):
-            new_car, old_car = self.car.get_data()
-            # TODO: Handle edge case when first message arrive
+        car_pos = self.find_own_pos(ambulance_position_history[0]['timestamp'], ambulance_position_history[1]['timestamp'])
+        if car_pos is not None:
+            if 2 == len(car_pos):
 
-            # Plot coordinates to map, updates everytime new data arrives. Run in Safari
-            self.map.plot_coordinates(old_car['longitude'], old_car['latitude'], 'bs')
-            self.map.plot_coordinates(ambulance_position_history[1]['longitude'], ambulance_position_history[1]['latitude'], 'rs')
-            self.pick_message(new_car, old_car, ambulance_position_history[0], ambulance_position_history[1])
-            self.map.show_map()
+                # TODO: Handle edge case when first message arrive
+
+                # Plot coordinates to map, updates everytime new data arrives. Run in Safari
+                self.map.plot_coordinates(car_pos[1]['longitude'], car_pos[1]['latitude'], 'bs')
+                self.map.plot_coordinates(ambulance_position_history[1]['longitude'], ambulance_position_history[1]['latitude'], 'rs')
+                self.pick_message(car_pos[0], car_pos[1], ambulance_position_history[0], ambulance_position_history[1])
+                self.map.show_map()
 
     def find_own_pos(self, first_timestamp, second_timestamp):
         '''Use timestamps from ambulance data to get car data'''
-        first_car_pos = None
-        second_car_pos = None
+        relevant_pos = []
+        old_car = None
+        new_car = None
         for position in self.car.position_history:
-            if position['timestamp'][:10] == first_timestamp:
-                first_car_pos = position
-            if position['timestamp'][:10] == second_timestamp:
-                second_car_pos = position
-        if first_car_pos is not None and second_car_pos is not None:
-            self.car.position_history.clear()  # Clear old data points
-            self.car.position_history.append(first_car_pos)
-            self.car.position_history.append(second_car_pos)
+            #print(str(position['timestamp'])[:10])
+            if str(position['timestamp'])[:10] == str(first_timestamp+300)[:10]:
+                relevant_pos.append(position)
+            if str(position['timestamp'])[:10] == str(second_timestamp + 300)[:10]:
+                relevant_pos.append(position)
+                old_car = relevant_pos.pop()
+                new_car = relevant_pos.pop()
+        return new_car, old_car
+        # if first_car_pos is not None and second_car_pos is not None:
+        #     self.car.position_history.clear()  # Clear old data points
+        #     self.car.position_history.append(first_car_pos)
+        #     self.car.position_history.append(second_car_pos)
 
     def pick_message(self, new_car, old_car, new_ambu, old_ambu):
         '''Checks if the current data is relevant, and returns a integer
