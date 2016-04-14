@@ -10,7 +10,7 @@ class Vehicle:
 
     def __init__(self, start_ahead=False, speed=1, reversed=False):
         self.position_history = deque()
-        self.json_list('start_ahead.json')
+        self.json_list('car/start_ahead.json')
 
 
     def json_list(self, file_path):
