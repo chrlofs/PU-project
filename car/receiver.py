@@ -1,5 +1,7 @@
 import socket
+import json
 from collections import deque
+from car.process_data import ProcessData
 
 class Receiver:
 
@@ -20,29 +22,45 @@ class Receiver:
         self.position_history = deque()
 
         self.current_data = None
+        self.format_dict = dict.fromkeys(['timestamp', 'longitude',
+                                'latitude'])
+        self.process_data = ProcessData()
+
 
     def add_to_queue(self, dict_insert):
         '''Add received element to the receiver queue.
-
         Keyword arguments:
         dict_insert -- dict containing GPS data and timestamp
         '''
+        self.position_history.append(dict_insert)
 
-        if self.position_history.count() >= 2:
-            self.position_history.pop()
-        self.position_history.appendleft(dict_insert)
+    def notify_process_data(self):
+        '''Notifies process_data when receiving data from sender'''
+        if len(self.position_history) >1:
+            self.process_data.notify(self.get_data())
+
+    def get_data(self):
+        '''Returns the two last datasets from position_history'''
+        if len(self.position_history) > 1:
+            new_amb = self.position_history.popleft()
+            old_amb = self.position_history.popleft()
+            self.position_history.appendleft(old_amb)
+            return [new_amb, old_amb]
 
     def receive(self):
         '''Receive data and convert bytes to string.'''
         try:
         # Listen until terminated by user
             while True:
-                data, addr = self.sock.recvfrom(1024)
-                data = data.decode(encoding='UTF-8')
-                print(data)
+                rawdata, addr = self.sock.recvfrom(1024)
+                data = rawdata.decode(encoding='UTF-8')
+                # Convert data to dictionary
+                acceptable_string = data.replace("'","\"")
+                data = json.loads(acceptable_string)
+                self.add_to_queue(data)
+                self.notify_process_data()
                 if not data:
                     break
-                print(data)
         except(KeyboardInterrupt):
             print("Closing socket")
             self.sock.close()

@@ -25,11 +25,31 @@ class Calculator:
         dist_lat = lat2 - lat1
 
         a = sin(dist_lat / 2)**2 + cos(lat1) * cos(lat2) * sin(dist_long)**2
-        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        c = atan2(sqrt(a), sqrt(1 - a))
 
         dist = R * c
 
         return dist
+
+    @staticmethod
+    def speed(long1, lat1, long2, lat2, time_seconds):
+        """Converts gps longitudes and latitudes and time beteen to 
+        determine speed
+
+        Keyword arguments:
+        long1 -- longitude for old
+        lat1 -- latitute for old
+        long2 -- longitude for new
+        lat2 -- latitude for new
+        time_seconds
+        """
+        print(time_seconds)
+        distance = Calculator.gps_to_kmeters(long1, lat1, long2, lat2)
+        if time_seconds == 0:
+            return 0
+        speed = distance/(time_seconds/(60*60))
+
+        return speed
 
     @staticmethod
     def time_to_intersection(distance, ambu_speed, car_speed):
