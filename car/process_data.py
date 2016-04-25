@@ -1,11 +1,12 @@
-from car.vehicle import Vehicle
-from car.direction import Direction
+from vehicle import Vehicle
+from direction import Direction
 from math import fabs
-from car.support.calculator import Calculator
+from support.calculator import Calculator
 from bisect import bisect_left
 from collections import deque
-from car.mapview import MapView
-from car.text_to_speech import TextToSpeech
+from mapview import MapView
+from text_to_speech import TextToSpeech
+import time
 
 
 class ProcessData:
@@ -23,10 +24,13 @@ class ProcessData:
 
     def notify(self, ambulance_position_history):
         '''Called by receiver to notify the car about new ambulance position'''
+
         print('process_data notified')
         car_pos = self.find_own_pos(ambulance_position_history[0]['timestamp'], ambulance_position_history[1]['timestamp'])
         if car_pos is not None:
             if 2 == len(car_pos):
+                # if car_pos[0] is not None and car_pos[1] is not None:
+                print(" ")
 
                 # TODO: Handle edge case when first message arrive
 
@@ -36,6 +40,7 @@ class ProcessData:
                 message = self.pick_message(car_pos[1], car_pos[0], ambulance_position_history[1], ambulance_position_history[0])
                 self.text_to_speech.play(message)
                 self.map.show_map()
+                time.sleep(1)
 
     def find_own_pos(self, first_timestamp, second_timestamp):
         '''Use timestamps from ambulance data to get car data'''

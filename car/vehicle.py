@@ -1,9 +1,6 @@
 import time
 import json
-import copy
-import itertools
 from collections import deque
-import collections
 
 class Vehicle:
     '''modification choose if you wan't to drive normal, reversed or slow'''
