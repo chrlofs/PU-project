@@ -2,19 +2,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
   <style>
-    #map808e35e61454423c8533ef4627477bfa {
+    #map7f1945a422aa4a3384439c4677bae924 {
       height:100%;
     }
   </style> 
 </head>
 <body>
-  <div id="map808e35e61454423c8533ef4627477bfa"></div>
+  <div id="map7f1945a422aa4a3384439c4677bae924"></div>
 <script text="text/javascript">
-var map = L.map('map808e35e61454423c8533ef4627477bfa');
+var map = L.map('map7f1945a422aa4a3384439c4677bae924');
 L.tileLayer(
   "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   {maxZoom:19, attribution: '<a href="https://github.com/jwass/mplleaflet">mplleaflet</a> | Map data (c) <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'}).addTo(map);
-var gjData = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"html": "<svg width=\"8px\" height=\"8px\" viewBox=\"-4.0 -4.0 8.0 8.0\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">  <path d=\"M -3.0 -3.0 L 3.0 -3.0 L 3.0 3.0 L -3.0 3.0 Z\" fill=\"#FF0000\" stroke-opacity=\"1\" fill-opacity=\"1\" stroke-width=\"0.5\" stroke=\"#000000\" /></svg>", "anchor_x": 4.0, "anchor_y": 4.0}, "geometry": {"type": "Point", "coordinates": [-83.0, 40.0]}}]};
+var gjData = {"features": [{"properties": {"anchor_y": 4.0, "anchor_x": 4.0, "html": "<svg width=\"8px\" height=\"8px\" viewBox=\"-4.0 -4.0 8.0 8.0\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">  <path d=\"M -3.0 -3.0 L 3.0 -3.0 L 3.0 3.0 L -3.0 3.0 Z\" fill=\"#0000FF\" stroke=\"#000000\" stroke-width=\"0.5\" fill-opacity=\"1\" stroke-opacity=\"1\" /></svg>"}, "type": "Feature", "geometry": {"coordinates": [-83.23645, 42.269852], "type": "Point"}}, {"properties": {"anchor_y": 4.0, "anchor_x": 4.0, "html": "<svg width=\"8px\" height=\"8px\" viewBox=\"-4.0 -4.0 8.0 8.0\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">  <path d=\"M -3.0 -3.0 L 3.0 -3.0 L 3.0 3.0 L -3.0 3.0 Z\" fill=\"#FF0000\" stroke=\"#000000\" stroke-width=\"0.5\" fill-opacity=\"1\" stroke-opacity=\"1\" /></svg>"}, "type": "Feature", "geometry": {"coordinates": [-83.237808, 42.269817], "type": "Point"}}], "type": "FeatureCollection"};
 
 if (gjData.features.length != 0) {
   var gj = L.geoJson(gjData, {

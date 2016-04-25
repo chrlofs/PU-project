@@ -1,7 +1,7 @@
 import socket
 import json
 from collections import deque
-from car.process_data import ProcessData
+from process_data import ProcessData
 
 class Receiver:
 

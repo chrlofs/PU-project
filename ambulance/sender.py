@@ -6,7 +6,7 @@ class Sender:
 
     def __init__(self):
         # List of IP addresses to iterate through
-        self.cars = ['10.22.64.135']
+        self.cars = ['10.22.0.17']
 
         # Add hardcoded IP addresses
         self.cars.append('localhost')
