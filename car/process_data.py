@@ -1,11 +1,23 @@
-from car.vehicle import Vehicle
-from car.direction import Direction
+
+try: 
+    from vehicle import Vehicle
+    from direction import Direction
+    from support.calculator import Calculator
+    from mapview import MapView
+    from text_to_speech import TextToSpeech
+except ImportError: 
+    from car.vehicle import Vehicle
+    from car.direction import Direction
+    from car.support.calculator import Calculator
+    from car.mapview import MapView
+    from car.text_to_speech import TextToSpeech
 from math import fabs
-from car.support.calculator import Calculator
+
 from bisect import bisect_left
 from collections import deque
-from car.mapview import MapView
-from car.text_to_speech import TextToSpeech
+
+
+import time
 
 
 class ProcessData:
@@ -23,19 +35,22 @@ class ProcessData:
 
     def notify(self, ambulance_position_history):
         '''Called by receiver to notify the car about new ambulance position'''
+
         print('process_data notified')
         car_pos = self.find_own_pos(ambulance_position_history[0]['timestamp'], ambulance_position_history[1]['timestamp'])
         if car_pos is not None:
             if 2 == len(car_pos):
+                if car_pos[0] is not None and car_pos[1] is not None:
+                    print(" ")
+                    # TODO: Handle edge case when first message arrive
 
-                # TODO: Handle edge case when first message arrive
-
-                # Plot coordinates to map, updates everytime new data arrives. Run in Safari
-                self.map.plot_coordinates(car_pos[1]['longitude'], car_pos[1]['latitude'], 'bs')
-                self.map.plot_coordinates(ambulance_position_history[1]['longitude'], ambulance_position_history[1]['latitude'], 'rs')
-                message = self.pick_message(car_pos[1], car_pos[0], ambulance_position_history[1], ambulance_position_history[0])
-                self.text_to_speech.play(message)
-                self.map.show_map()
+                    # Plot coordinates to map, updates everytime new data arrives. Run in Safari
+                    self.map.plot_coordinates(car_pos[1]['longitude'], car_pos[1]['latitude'], 'bs')
+                    self.map.plot_coordinates(ambulance_position_history[1]['longitude'], ambulance_position_history[1]['latitude'], 'rs')
+                    message = self.pick_message(car_pos[1], car_pos[0], ambulance_position_history[1], ambulance_position_history[0])
+                    self.text_to_speech.play(message)
+                    self.map.show_map()
+                    time.sleep(0.75)
 
     def find_own_pos(self, first_timestamp, second_timestamp):
         '''Use timestamps from ambulance data to get car data'''
@@ -48,8 +63,9 @@ class ProcessData:
                 relevant_pos.append(position)
             if str(position['timestamp'])[:10] == str(second_timestamp + 300)[:10]:
                 relevant_pos.append(position)
-                old_car = relevant_pos.pop()
-                new_car = relevant_pos.pop()
+                if len(relevant_pos) > 1:
+                    old_car = relevant_pos.pop()
+                    new_car = relevant_pos.pop()
         return new_car, old_car
         # if first_car_pos is not None and second_car_pos is not None:
         #     self.car.position_history.clear()  # Clear old data points

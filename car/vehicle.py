@@ -1,16 +1,17 @@
 import time
 import json
-import copy
-import itertools
 from collections import deque
-import collections
+
 
 class Vehicle:
     '''modification choose if you wan't to drive normal, reversed or slow'''
 
     def __init__(self, start_ahead=False, speed=1, reversed=False):
         self.position_history = deque()
-        self.json_list('car/start_ahead.json')
+        try: 
+            self.json_list('start_ahead.json')
+        except FileNotFoundError: 
+            self.json_list('car/start_ahead.json')
 
 
     def json_list(self, file_path):

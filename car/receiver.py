@@ -1,7 +1,10 @@
 import socket
 import json
 from collections import deque
-from car.process_data import ProcessData
+try: 
+    from process_data import ProcessData
+except ImportError: 
+    from car.process_data import ProcessData
 
 class Receiver:
 
