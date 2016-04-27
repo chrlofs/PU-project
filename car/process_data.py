@@ -1,11 +1,22 @@
-from vehicle import Vehicle
-from direction import Direction
+
+try: 
+    from vehicle import Vehicle
+    from direction import Direction
+    from support.calculator import Calculator
+    from mapview import MapView
+    from text_to_speech import TextToSpeech
+except ImportError: 
+    from car.vehicle import Vehicle
+    from car.direction import Direction
+    from car.support.calculator import Calculator
+    from car.mapview import MapView
+    from car.text_to_speech import TextToSpeech
 from math import fabs
-from support.calculator import Calculator
+
 from bisect import bisect_left
 from collections import deque
-from mapview import MapView
-from text_to_speech import TextToSpeech
+
+
 import time
 
 
